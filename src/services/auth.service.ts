@@ -27,6 +27,13 @@ const login = async (dto: Login) => {
       email: validatedLogin.email,
       password: validatedLogin.password,
     },
+    include: {
+      permissions: {
+        select: {
+          permission: true,
+        },
+      },
+    },
   });
 
   if (!user) {

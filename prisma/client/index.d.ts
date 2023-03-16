@@ -963,11 +963,11 @@ export namespace Prisma {
 
 
   export type PermissionCountOutputType = {
-    Permission: number
+    permission: number
   }
 
   export type PermissionCountOutputTypeSelect = {
-    Permission?: boolean
+    permission?: boolean
   }
 
   export type PermissionCountOutputTypeGetPayload<S extends boolean | null | undefined | PermissionCountOutputTypeArgs> =
@@ -4021,13 +4021,13 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     createdAt?: boolean
-    Permission?: boolean | Permission$PermissionArgs
+    permission?: boolean | Permission$permissionArgs
     _count?: boolean | PermissionCountOutputTypeArgs
   }
 
 
   export type PermissionInclude = {
-    Permission?: boolean | Permission$PermissionArgs
+    permission?: boolean | Permission$permissionArgs
     _count?: boolean | PermissionCountOutputTypeArgs
   }
 
@@ -4038,13 +4038,13 @@ export namespace Prisma {
     S extends { include: any } & (PermissionArgs | PermissionFindManyArgs)
     ? Permission  & {
     [P in TruthyKeys<S['include']>]:
-        P extends 'Permission' ? Array < UserHasPermissionGetPayload<S['include'][P]>>  :
+        P extends 'permission' ? Array < UserHasPermissionGetPayload<S['include'][P]>>  :
         P extends '_count' ? PermissionCountOutputTypeGetPayload<S['include'][P]> :  never
   } 
     : S extends { select: any } & (PermissionArgs | PermissionFindManyArgs)
       ? {
     [P in TruthyKeys<S['select']>]:
-        P extends 'Permission' ? Array < UserHasPermissionGetPayload<S['select'][P]>>  :
+        P extends 'permission' ? Array < UserHasPermissionGetPayload<S['select'][P]>>  :
         P extends '_count' ? PermissionCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof Permission ? Permission[P] : never
   } 
       : Permission
@@ -4417,7 +4417,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: 'PrismaPromise';
     constructor(_dmmf: runtime.DMMFClass, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
 
-    Permission<T extends Permission$PermissionArgs= {}>(args?: Subset<T, Permission$PermissionArgs>): Prisma.PrismaPromise<Array<UserHasPermissionGetPayload<T>>| Null>;
+    permission<T extends Permission$permissionArgs= {}>(args?: Subset<T, Permission$permissionArgs>): Prisma.PrismaPromise<Array<UserHasPermissionGetPayload<T>>| Null>;
 
     private get _document();
     /**
@@ -4775,9 +4775,9 @@ export namespace Prisma {
 
 
   /**
-   * Permission.Permission
+   * Permission.permission
    */
-  export type Permission$PermissionArgs = {
+  export type Permission$permissionArgs = {
     /**
      * Select specific fields to fetch from the UserHasPermission
      */
@@ -4969,14 +4969,14 @@ export namespace Prisma {
     userId?: boolean
     permissionId?: boolean
     createdAt?: boolean
-    User?: boolean | UserArgs
-    Permission?: boolean | PermissionArgs
+    user?: boolean | UserArgs
+    permission?: boolean | PermissionArgs
   }
 
 
   export type UserHasPermissionInclude = {
-    User?: boolean | UserArgs
-    Permission?: boolean | PermissionArgs
+    user?: boolean | UserArgs
+    permission?: boolean | PermissionArgs
   }
 
   export type UserHasPermissionGetPayload<S extends boolean | null | undefined | UserHasPermissionArgs> =
@@ -4986,14 +4986,14 @@ export namespace Prisma {
     S extends { include: any } & (UserHasPermissionArgs | UserHasPermissionFindManyArgs)
     ? UserHasPermission  & {
     [P in TruthyKeys<S['include']>]:
-        P extends 'User' ? UserGetPayload<S['include'][P]> | null :
-        P extends 'Permission' ? PermissionGetPayload<S['include'][P]> | null :  never
+        P extends 'user' ? UserGetPayload<S['include'][P]> | null :
+        P extends 'permission' ? PermissionGetPayload<S['include'][P]> | null :  never
   } 
     : S extends { select: any } & (UserHasPermissionArgs | UserHasPermissionFindManyArgs)
       ? {
     [P in TruthyKeys<S['select']>]:
-        P extends 'User' ? UserGetPayload<S['select'][P]> | null :
-        P extends 'Permission' ? PermissionGetPayload<S['select'][P]> | null :  P extends keyof UserHasPermission ? UserHasPermission[P] : never
+        P extends 'user' ? UserGetPayload<S['select'][P]> | null :
+        P extends 'permission' ? PermissionGetPayload<S['select'][P]> | null :  P extends keyof UserHasPermission ? UserHasPermission[P] : never
   } 
       : UserHasPermission
 
@@ -5365,9 +5365,9 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: 'PrismaPromise';
     constructor(_dmmf: runtime.DMMFClass, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
 
-    User<T extends UserArgs= {}>(args?: Subset<T, UserArgs>): Prisma__UserClient<UserGetPayload<T> | Null>;
+    user<T extends UserArgs= {}>(args?: Subset<T, UserArgs>): Prisma__UserClient<UserGetPayload<T> | Null>;
 
-    Permission<T extends PermissionArgs= {}>(args?: Subset<T, PermissionArgs>): Prisma__PermissionClient<PermissionGetPayload<T> | Null>;
+    permission<T extends PermissionArgs= {}>(args?: Subset<T, PermissionArgs>): Prisma__PermissionClient<PermissionGetPayload<T> | Null>;
 
     private get _document();
     /**
@@ -5995,14 +5995,14 @@ export namespace Prisma {
     id?: StringFilter | string
     name?: StringFilter | string
     createdAt?: DateTimeFilter | Date | string
-    Permission?: UserHasPermissionListRelationFilter
+    permission?: UserHasPermissionListRelationFilter
   }
 
   export type PermissionOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrder
     createdAt?: SortOrder
-    Permission?: UserHasPermissionOrderByRelationAggregateInput
+    permission?: UserHasPermissionOrderByRelationAggregateInput
   }
 
   export type PermissionWhereUniqueInput = {
@@ -6035,8 +6035,8 @@ export namespace Prisma {
     userId?: StringNullableFilter | string | null
     permissionId?: StringNullableFilter | string | null
     createdAt?: DateTimeFilter | Date | string
-    User?: XOR<UserRelationFilter, UserWhereInput> | null
-    Permission?: XOR<PermissionRelationFilter, PermissionWhereInput> | null
+    user?: XOR<UserRelationFilter, UserWhereInput> | null
+    permission?: XOR<PermissionRelationFilter, PermissionWhereInput> | null
   }
 
   export type UserHasPermissionOrderByWithRelationInput = {
@@ -6044,8 +6044,8 @@ export namespace Prisma {
     userId?: SortOrder
     permissionId?: SortOrder
     createdAt?: SortOrder
-    User?: UserOrderByWithRelationInput
-    Permission?: PermissionOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
+    permission?: PermissionOrderByWithRelationInput
   }
 
   export type UserHasPermissionWhereUniqueInput = {
@@ -6272,28 +6272,28 @@ export namespace Prisma {
     id?: string
     name: string
     createdAt?: Date | string
-    Permission?: UserHasPermissionCreateNestedManyWithoutPermissionInput
+    permission?: UserHasPermissionCreateNestedManyWithoutPermissionInput
   }
 
   export type PermissionUncheckedCreateInput = {
     id?: string
     name: string
     createdAt?: Date | string
-    Permission?: UserHasPermissionUncheckedCreateNestedManyWithoutPermissionInput
+    permission?: UserHasPermissionUncheckedCreateNestedManyWithoutPermissionInput
   }
 
   export type PermissionUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    Permission?: UserHasPermissionUpdateManyWithoutPermissionNestedInput
+    permission?: UserHasPermissionUpdateManyWithoutPermissionNestedInput
   }
 
   export type PermissionUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    Permission?: UserHasPermissionUncheckedUpdateManyWithoutPermissionNestedInput
+    permission?: UserHasPermissionUncheckedUpdateManyWithoutPermissionNestedInput
   }
 
   export type PermissionCreateManyInput = {
@@ -6317,8 +6317,8 @@ export namespace Prisma {
   export type UserHasPermissionCreateInput = {
     id?: string
     createdAt?: Date | string
-    User?: UserCreateNestedOneWithoutPermissionsInput
-    Permission?: PermissionCreateNestedOneWithoutPermissionInput
+    user?: UserCreateNestedOneWithoutPermissionsInput
+    permission?: PermissionCreateNestedOneWithoutPermissionInput
   }
 
   export type UserHasPermissionUncheckedCreateInput = {
@@ -6331,8 +6331,8 @@ export namespace Prisma {
   export type UserHasPermissionUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    User?: UserUpdateOneWithoutPermissionsNestedInput
-    Permission?: PermissionUpdateOneWithoutPermissionNestedInput
+    user?: UserUpdateOneWithoutPermissionsNestedInput
+    permission?: PermissionUpdateOneWithoutPermissionNestedInput
   }
 
   export type UserHasPermissionUncheckedUpdateInput = {
@@ -6905,7 +6905,7 @@ export namespace Prisma {
   export type UserHasPermissionCreateWithoutUserInput = {
     id?: string
     createdAt?: Date | string
-    Permission?: PermissionCreateNestedOneWithoutPermissionInput
+    permission?: PermissionCreateNestedOneWithoutPermissionInput
   }
 
   export type UserHasPermissionUncheckedCreateWithoutUserInput = {
@@ -7051,7 +7051,7 @@ export namespace Prisma {
   export type UserHasPermissionCreateWithoutPermissionInput = {
     id?: string
     createdAt?: Date | string
-    User?: UserCreateNestedOneWithoutPermissionsInput
+    user?: UserCreateNestedOneWithoutPermissionsInput
   }
 
   export type UserHasPermissionUncheckedCreateWithoutPermissionInput = {
@@ -7179,7 +7179,7 @@ export namespace Prisma {
   export type UserHasPermissionUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    Permission?: PermissionUpdateOneWithoutPermissionNestedInput
+    permission?: PermissionUpdateOneWithoutPermissionNestedInput
   }
 
   export type UserHasPermissionUncheckedUpdateWithoutUserInput = {
@@ -7227,7 +7227,7 @@ export namespace Prisma {
   export type UserHasPermissionUpdateWithoutPermissionInput = {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    User?: UserUpdateOneWithoutPermissionsNestedInput
+    user?: UserUpdateOneWithoutPermissionsNestedInput
   }
 
   export type UserHasPermissionUncheckedUpdateWithoutPermissionInput = {

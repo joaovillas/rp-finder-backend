@@ -6,9 +6,15 @@ const getUserById = async (id: string) => {
       id,
     },
     include: {
-      permissions: true,
+      permissions: {
+        select: {
+          permission: true,
+        },
+      },
     },
   });
+
+  console.log(user);
 
   return user;
 };

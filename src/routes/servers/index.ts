@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { Server } from "../../../prisma/client";
+import { isAdmin } from "../../middlewares/permission";
 import serverService from "../../services/server.service";
 import { RequestValidation } from "../../types/common/Request";
 import { responseHandler } from "../../utils/response";
@@ -15,9 +16,8 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/", async (req: RequestValidation<Server>, res) => {
+router.post("/", isAdmin, async (req: RequestValidation<Server>, res) => {
   try {
-    console.log(req.body)
     const server = await serverService.create(req.body);
     return res.status(201).send(server);
   } catch (err) {

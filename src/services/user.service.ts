@@ -5,6 +5,9 @@ const getUserById = async (id: string) => {
     where: {
       id,
     },
+    include: {
+      permissions: true,
+    },
   });
 
   return user;

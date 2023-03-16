@@ -49,6 +49,27 @@ export type ServerTags = {
   createdAt: Date
 }
 
+/**
+ * Model Permission
+ * 
+ */
+export type Permission = {
+  id: string
+  name: string
+  createdAt: Date
+}
+
+/**
+ * Model UserHasPermission
+ * 
+ */
+export type UserHasPermission = {
+  id: string
+  userId: string | null
+  permissionId: string | null
+  createdAt: Date
+}
+
 
 /**
  * ##  Prisma Client ʲˢ
@@ -196,6 +217,26 @@ export class PrismaClient<
     * ```
     */
   get serverTags(): Prisma.ServerTagsDelegate<GlobalReject>;
+
+  /**
+   * `prisma.permission`: Exposes CRUD operations for the **Permission** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Permissions
+    * const permissions = await prisma.permission.findMany()
+    * ```
+    */
+  get permission(): Prisma.PermissionDelegate<GlobalReject>;
+
+  /**
+   * `prisma.userHasPermission`: Exposes CRUD operations for the **UserHasPermission** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more UserHasPermissions
+    * const userHasPermissions = await prisma.userHasPermission.findMany()
+    * ```
+    */
+  get userHasPermission(): Prisma.UserHasPermissionDelegate<GlobalReject>;
 }
 
 export namespace Prisma {
@@ -667,7 +708,9 @@ export namespace Prisma {
   export const ModelName: {
     User: 'User',
     Server: 'Server',
-    ServerTags: 'ServerTags'
+    ServerTags: 'ServerTags',
+    Permission: 'Permission',
+    UserHasPermission: 'UserHasPermission'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -829,6 +872,49 @@ export namespace Prisma {
 
 
   /**
+   * Count Type UserCountOutputType
+   */
+
+
+  export type UserCountOutputType = {
+    permissions: number
+  }
+
+  export type UserCountOutputTypeSelect = {
+    permissions?: boolean
+  }
+
+  export type UserCountOutputTypeGetPayload<S extends boolean | null | undefined | UserCountOutputTypeArgs> =
+    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
+    S extends true ? UserCountOutputType :
+    S extends undefined ? never :
+    S extends { include: any } & (UserCountOutputTypeArgs)
+    ? UserCountOutputType 
+    : S extends { select: any } & (UserCountOutputTypeArgs)
+      ? {
+    [P in TruthyKeys<S['select']>]:
+    P extends keyof UserCountOutputType ? UserCountOutputType[P] : never
+  } 
+      : UserCountOutputType
+
+
+
+
+  // Custom InputTypes
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeArgs = {
+    /**
+     * Select specific fields to fetch from the UserCountOutputType
+     */
+    select?: UserCountOutputTypeSelect | null
+  }
+
+
+
+  /**
    * Count Type ServerCountOutputType
    */
 
@@ -867,6 +953,49 @@ export namespace Prisma {
      * Select specific fields to fetch from the ServerCountOutputType
      */
     select?: ServerCountOutputTypeSelect | null
+  }
+
+
+
+  /**
+   * Count Type PermissionCountOutputType
+   */
+
+
+  export type PermissionCountOutputType = {
+    Permission: number
+  }
+
+  export type PermissionCountOutputTypeSelect = {
+    Permission?: boolean
+  }
+
+  export type PermissionCountOutputTypeGetPayload<S extends boolean | null | undefined | PermissionCountOutputTypeArgs> =
+    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
+    S extends true ? PermissionCountOutputType :
+    S extends undefined ? never :
+    S extends { include: any } & (PermissionCountOutputTypeArgs)
+    ? PermissionCountOutputType 
+    : S extends { select: any } & (PermissionCountOutputTypeArgs)
+      ? {
+    [P in TruthyKeys<S['select']>]:
+    P extends keyof PermissionCountOutputType ? PermissionCountOutputType[P] : never
+  } 
+      : PermissionCountOutputType
+
+
+
+
+  // Custom InputTypes
+
+  /**
+   * PermissionCountOutputType without action
+   */
+  export type PermissionCountOutputTypeArgs = {
+    /**
+     * Select specific fields to fetch from the PermissionCountOutputType
+     */
+    select?: PermissionCountOutputTypeSelect | null
   }
 
 
@@ -1057,19 +1186,31 @@ export namespace Prisma {
     phone?: boolean
     password?: boolean
     createdAt?: boolean
+    permissions?: boolean | User$permissionsArgs
+    _count?: boolean | UserCountOutputTypeArgs
   }
 
+
+  export type UserInclude = {
+    permissions?: boolean | User$permissionsArgs
+    _count?: boolean | UserCountOutputTypeArgs
+  }
 
   export type UserGetPayload<S extends boolean | null | undefined | UserArgs> =
     S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
     S extends true ? User :
     S extends undefined ? never :
     S extends { include: any } & (UserArgs | UserFindManyArgs)
-    ? User 
+    ? User  & {
+    [P in TruthyKeys<S['include']>]:
+        P extends 'permissions' ? Array < UserHasPermissionGetPayload<S['include'][P]>>  :
+        P extends '_count' ? UserCountOutputTypeGetPayload<S['include'][P]> :  never
+  } 
     : S extends { select: any } & (UserArgs | UserFindManyArgs)
       ? {
     [P in TruthyKeys<S['select']>]:
-    P extends keyof User ? User[P] : never
+        P extends 'permissions' ? Array < UserHasPermissionGetPayload<S['select'][P]>>  :
+        P extends '_count' ? UserCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof User ? User[P] : never
   } 
       : User
 
@@ -1441,6 +1582,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: 'PrismaPromise';
     constructor(_dmmf: runtime.DMMFClass, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
 
+    permissions<T extends User$permissionsArgs= {}>(args?: Subset<T, User$permissionsArgs>): Prisma.PrismaPromise<Array<UserHasPermissionGetPayload<T>>| Null>;
 
     private get _document();
     /**
@@ -1478,6 +1620,10 @@ export namespace Prisma {
      */
     select?: UserSelect | null
     /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserInclude | null
+    /**
      * Filter, which User to fetch.
      */
     where: UserWhereUniqueInput
@@ -1504,6 +1650,10 @@ export namespace Prisma {
      */
     select?: UserSelect | null
     /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserInclude | null
+    /**
      * Filter, which User to fetch.
      */
     where: UserWhereUniqueInput
@@ -1518,6 +1668,10 @@ export namespace Prisma {
      * Select specific fields to fetch from the User
      */
     select?: UserSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserInclude | null
     /**
      * Filter, which User to fetch.
      */
@@ -1575,6 +1729,10 @@ export namespace Prisma {
      */
     select?: UserSelect | null
     /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserInclude | null
+    /**
      * Filter, which User to fetch.
      */
     where?: UserWhereInput
@@ -1620,6 +1778,10 @@ export namespace Prisma {
      */
     select?: UserSelect | null
     /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserInclude | null
+    /**
      * Filter, which Users to fetch.
      */
     where?: UserWhereInput
@@ -1660,6 +1822,10 @@ export namespace Prisma {
      */
     select?: UserSelect | null
     /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserInclude | null
+    /**
      * The data needed to create a User.
      */
     data: XOR<UserCreateInput, UserUncheckedCreateInput>
@@ -1686,6 +1852,10 @@ export namespace Prisma {
      * Select specific fields to fetch from the User
      */
     select?: UserSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserInclude | null
     /**
      * The data needed to update a User.
      */
@@ -1721,6 +1891,10 @@ export namespace Prisma {
      */
     select?: UserSelect | null
     /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserInclude | null
+    /**
      * The filter to search for the User to update in case it exists.
      */
     where: UserWhereUniqueInput
@@ -1744,6 +1918,10 @@ export namespace Prisma {
      */
     select?: UserSelect | null
     /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserInclude | null
+    /**
      * Filter which User to delete.
      */
     where: UserWhereUniqueInput
@@ -1762,6 +1940,27 @@ export namespace Prisma {
 
 
   /**
+   * User.permissions
+   */
+  export type User$permissionsArgs = {
+    /**
+     * Select specific fields to fetch from the UserHasPermission
+     */
+    select?: UserHasPermissionSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserHasPermissionInclude | null
+    where?: UserHasPermissionWhereInput
+    orderBy?: Enumerable<UserHasPermissionOrderByWithRelationInput>
+    cursor?: UserHasPermissionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Enumerable<UserHasPermissionScalarFieldEnum>
+  }
+
+
+  /**
    * User without action
    */
   export type UserArgs = {
@@ -1769,6 +1968,10 @@ export namespace Prisma {
      * Select specific fields to fetch from the User
      */
     select?: UserSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserInclude | null
   }
 
 
@@ -3669,11 +3872,1889 @@ export namespace Prisma {
 
 
   /**
+   * Model Permission
+   */
+
+
+  export type AggregatePermission = {
+    _count: PermissionCountAggregateOutputType | null
+    _min: PermissionMinAggregateOutputType | null
+    _max: PermissionMaxAggregateOutputType | null
+  }
+
+  export type PermissionMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    createdAt: Date | null
+  }
+
+  export type PermissionMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    createdAt: Date | null
+  }
+
+  export type PermissionCountAggregateOutputType = {
+    id: number
+    name: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type PermissionMinAggregateInputType = {
+    id?: true
+    name?: true
+    createdAt?: true
+  }
+
+  export type PermissionMaxAggregateInputType = {
+    id?: true
+    name?: true
+    createdAt?: true
+  }
+
+  export type PermissionCountAggregateInputType = {
+    id?: true
+    name?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type PermissionAggregateArgs = {
+    /**
+     * Filter which Permission to aggregate.
+     */
+    where?: PermissionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Permissions to fetch.
+     */
+    orderBy?: Enumerable<PermissionOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PermissionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Permissions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Permissions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Permissions
+    **/
+    _count?: true | PermissionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PermissionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PermissionMaxAggregateInputType
+  }
+
+  export type GetPermissionAggregateType<T extends PermissionAggregateArgs> = {
+        [P in keyof T & keyof AggregatePermission]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePermission[P]>
+      : GetScalarType<T[P], AggregatePermission[P]>
+  }
+
+
+
+
+  export type PermissionGroupByArgs = {
+    where?: PermissionWhereInput
+    orderBy?: Enumerable<PermissionOrderByWithAggregationInput>
+    by: PermissionScalarFieldEnum[]
+    having?: PermissionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PermissionCountAggregateInputType | true
+    _min?: PermissionMinAggregateInputType
+    _max?: PermissionMaxAggregateInputType
+  }
+
+
+  export type PermissionGroupByOutputType = {
+    id: string
+    name: string
+    createdAt: Date
+    _count: PermissionCountAggregateOutputType | null
+    _min: PermissionMinAggregateOutputType | null
+    _max: PermissionMaxAggregateOutputType | null
+  }
+
+  type GetPermissionGroupByPayload<T extends PermissionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickArray<PermissionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PermissionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PermissionGroupByOutputType[P]>
+            : GetScalarType<T[P], PermissionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PermissionSelect = {
+    id?: boolean
+    name?: boolean
+    createdAt?: boolean
+    Permission?: boolean | Permission$PermissionArgs
+    _count?: boolean | PermissionCountOutputTypeArgs
+  }
+
+
+  export type PermissionInclude = {
+    Permission?: boolean | Permission$PermissionArgs
+    _count?: boolean | PermissionCountOutputTypeArgs
+  }
+
+  export type PermissionGetPayload<S extends boolean | null | undefined | PermissionArgs> =
+    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
+    S extends true ? Permission :
+    S extends undefined ? never :
+    S extends { include: any } & (PermissionArgs | PermissionFindManyArgs)
+    ? Permission  & {
+    [P in TruthyKeys<S['include']>]:
+        P extends 'Permission' ? Array < UserHasPermissionGetPayload<S['include'][P]>>  :
+        P extends '_count' ? PermissionCountOutputTypeGetPayload<S['include'][P]> :  never
+  } 
+    : S extends { select: any } & (PermissionArgs | PermissionFindManyArgs)
+      ? {
+    [P in TruthyKeys<S['select']>]:
+        P extends 'Permission' ? Array < UserHasPermissionGetPayload<S['select'][P]>>  :
+        P extends '_count' ? PermissionCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof Permission ? Permission[P] : never
+  } 
+      : Permission
+
+
+  type PermissionCountArgs = 
+    Omit<PermissionFindManyArgs, 'select' | 'include'> & {
+      select?: PermissionCountAggregateInputType | true
+    }
+
+  export interface PermissionDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
+
+    /**
+     * Find zero or one Permission that matches the filter.
+     * @param {PermissionFindUniqueArgs} args - Arguments to find a Permission
+     * @example
+     * // Get one Permission
+     * const permission = await prisma.permission.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends PermissionFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, PermissionFindUniqueArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'Permission'> extends True ? Prisma__PermissionClient<PermissionGetPayload<T>> : Prisma__PermissionClient<PermissionGetPayload<T> | null, null>
+
+    /**
+     * Find one Permission that matches the filter or throw an error  with `error.code='P2025'` 
+     *     if no matches were found.
+     * @param {PermissionFindUniqueOrThrowArgs} args - Arguments to find a Permission
+     * @example
+     * // Get one Permission
+     * const permission = await prisma.permission.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends PermissionFindUniqueOrThrowArgs>(
+      args?: SelectSubset<T, PermissionFindUniqueOrThrowArgs>
+    ): Prisma__PermissionClient<PermissionGetPayload<T>>
+
+    /**
+     * Find the first Permission that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PermissionFindFirstArgs} args - Arguments to find a Permission
+     * @example
+     * // Get one Permission
+     * const permission = await prisma.permission.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends PermissionFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, PermissionFindFirstArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'Permission'> extends True ? Prisma__PermissionClient<PermissionGetPayload<T>> : Prisma__PermissionClient<PermissionGetPayload<T> | null, null>
+
+    /**
+     * Find the first Permission that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PermissionFindFirstOrThrowArgs} args - Arguments to find a Permission
+     * @example
+     * // Get one Permission
+     * const permission = await prisma.permission.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends PermissionFindFirstOrThrowArgs>(
+      args?: SelectSubset<T, PermissionFindFirstOrThrowArgs>
+    ): Prisma__PermissionClient<PermissionGetPayload<T>>
+
+    /**
+     * Find zero or more Permissions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PermissionFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Permissions
+     * const permissions = await prisma.permission.findMany()
+     * 
+     * // Get first 10 Permissions
+     * const permissions = await prisma.permission.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const permissionWithIdOnly = await prisma.permission.findMany({ select: { id: true } })
+     * 
+    **/
+    findMany<T extends PermissionFindManyArgs>(
+      args?: SelectSubset<T, PermissionFindManyArgs>
+    ): Prisma.PrismaPromise<Array<PermissionGetPayload<T>>>
+
+    /**
+     * Create a Permission.
+     * @param {PermissionCreateArgs} args - Arguments to create a Permission.
+     * @example
+     * // Create one Permission
+     * const Permission = await prisma.permission.create({
+     *   data: {
+     *     // ... data to create a Permission
+     *   }
+     * })
+     * 
+    **/
+    create<T extends PermissionCreateArgs>(
+      args: SelectSubset<T, PermissionCreateArgs>
+    ): Prisma__PermissionClient<PermissionGetPayload<T>>
+
+    /**
+     * Create many Permissions.
+     *     @param {PermissionCreateManyArgs} args - Arguments to create many Permissions.
+     *     @example
+     *     // Create many Permissions
+     *     const permission = await prisma.permission.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends PermissionCreateManyArgs>(
+      args?: SelectSubset<T, PermissionCreateManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Permission.
+     * @param {PermissionDeleteArgs} args - Arguments to delete one Permission.
+     * @example
+     * // Delete one Permission
+     * const Permission = await prisma.permission.delete({
+     *   where: {
+     *     // ... filter to delete one Permission
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends PermissionDeleteArgs>(
+      args: SelectSubset<T, PermissionDeleteArgs>
+    ): Prisma__PermissionClient<PermissionGetPayload<T>>
+
+    /**
+     * Update one Permission.
+     * @param {PermissionUpdateArgs} args - Arguments to update one Permission.
+     * @example
+     * // Update one Permission
+     * const permission = await prisma.permission.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends PermissionUpdateArgs>(
+      args: SelectSubset<T, PermissionUpdateArgs>
+    ): Prisma__PermissionClient<PermissionGetPayload<T>>
+
+    /**
+     * Delete zero or more Permissions.
+     * @param {PermissionDeleteManyArgs} args - Arguments to filter Permissions to delete.
+     * @example
+     * // Delete a few Permissions
+     * const { count } = await prisma.permission.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends PermissionDeleteManyArgs>(
+      args?: SelectSubset<T, PermissionDeleteManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Permissions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PermissionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Permissions
+     * const permission = await prisma.permission.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends PermissionUpdateManyArgs>(
+      args: SelectSubset<T, PermissionUpdateManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Permission.
+     * @param {PermissionUpsertArgs} args - Arguments to update or create a Permission.
+     * @example
+     * // Update or create a Permission
+     * const permission = await prisma.permission.upsert({
+     *   create: {
+     *     // ... data to create a Permission
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Permission we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends PermissionUpsertArgs>(
+      args: SelectSubset<T, PermissionUpsertArgs>
+    ): Prisma__PermissionClient<PermissionGetPayload<T>>
+
+    /**
+     * Count the number of Permissions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PermissionCountArgs} args - Arguments to filter Permissions to count.
+     * @example
+     * // Count the number of Permissions
+     * const count = await prisma.permission.count({
+     *   where: {
+     *     // ... the filter for the Permissions we want to count
+     *   }
+     * })
+    **/
+    count<T extends PermissionCountArgs>(
+      args?: Subset<T, PermissionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends _Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PermissionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Permission.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PermissionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PermissionAggregateArgs>(args: Subset<T, PermissionAggregateArgs>): Prisma.PrismaPromise<GetPermissionAggregateType<T>>
+
+    /**
+     * Group by Permission.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PermissionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PermissionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PermissionGroupByArgs['orderBy'] }
+        : { orderBy?: PermissionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends TupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PermissionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPermissionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Permission.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__PermissionClient<T, Null = never> implements Prisma.PrismaPromise<T> {
+    private readonly _dmmf;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    readonly [Symbol.toStringTag]: 'PrismaPromise';
+    constructor(_dmmf: runtime.DMMFClass, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+
+    Permission<T extends Permission$PermissionArgs= {}>(args?: Subset<T, Permission$PermissionArgs>): Prisma.PrismaPromise<Array<UserHasPermissionGetPayload<T>>| Null>;
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+
+
+  // Custom InputTypes
+
+  /**
+   * Permission base type for findUnique actions
+   */
+  export type PermissionFindUniqueArgsBase = {
+    /**
+     * Select specific fields to fetch from the Permission
+     */
+    select?: PermissionSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: PermissionInclude | null
+    /**
+     * Filter, which Permission to fetch.
+     */
+    where: PermissionWhereUniqueInput
+  }
+
+  /**
+   * Permission findUnique
+   */
+  export interface PermissionFindUniqueArgs extends PermissionFindUniqueArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * Permission findUniqueOrThrow
+   */
+  export type PermissionFindUniqueOrThrowArgs = {
+    /**
+     * Select specific fields to fetch from the Permission
+     */
+    select?: PermissionSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: PermissionInclude | null
+    /**
+     * Filter, which Permission to fetch.
+     */
+    where: PermissionWhereUniqueInput
+  }
+
+
+  /**
+   * Permission base type for findFirst actions
+   */
+  export type PermissionFindFirstArgsBase = {
+    /**
+     * Select specific fields to fetch from the Permission
+     */
+    select?: PermissionSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: PermissionInclude | null
+    /**
+     * Filter, which Permission to fetch.
+     */
+    where?: PermissionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Permissions to fetch.
+     */
+    orderBy?: Enumerable<PermissionOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Permissions.
+     */
+    cursor?: PermissionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Permissions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Permissions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Permissions.
+     */
+    distinct?: Enumerable<PermissionScalarFieldEnum>
+  }
+
+  /**
+   * Permission findFirst
+   */
+  export interface PermissionFindFirstArgs extends PermissionFindFirstArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * Permission findFirstOrThrow
+   */
+  export type PermissionFindFirstOrThrowArgs = {
+    /**
+     * Select specific fields to fetch from the Permission
+     */
+    select?: PermissionSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: PermissionInclude | null
+    /**
+     * Filter, which Permission to fetch.
+     */
+    where?: PermissionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Permissions to fetch.
+     */
+    orderBy?: Enumerable<PermissionOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Permissions.
+     */
+    cursor?: PermissionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Permissions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Permissions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Permissions.
+     */
+    distinct?: Enumerable<PermissionScalarFieldEnum>
+  }
+
+
+  /**
+   * Permission findMany
+   */
+  export type PermissionFindManyArgs = {
+    /**
+     * Select specific fields to fetch from the Permission
+     */
+    select?: PermissionSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: PermissionInclude | null
+    /**
+     * Filter, which Permissions to fetch.
+     */
+    where?: PermissionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Permissions to fetch.
+     */
+    orderBy?: Enumerable<PermissionOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Permissions.
+     */
+    cursor?: PermissionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Permissions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Permissions.
+     */
+    skip?: number
+    distinct?: Enumerable<PermissionScalarFieldEnum>
+  }
+
+
+  /**
+   * Permission create
+   */
+  export type PermissionCreateArgs = {
+    /**
+     * Select specific fields to fetch from the Permission
+     */
+    select?: PermissionSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: PermissionInclude | null
+    /**
+     * The data needed to create a Permission.
+     */
+    data: XOR<PermissionCreateInput, PermissionUncheckedCreateInput>
+  }
+
+
+  /**
+   * Permission createMany
+   */
+  export type PermissionCreateManyArgs = {
+    /**
+     * The data used to create many Permissions.
+     */
+    data: Enumerable<PermissionCreateManyInput>
+    skipDuplicates?: boolean
+  }
+
+
+  /**
+   * Permission update
+   */
+  export type PermissionUpdateArgs = {
+    /**
+     * Select specific fields to fetch from the Permission
+     */
+    select?: PermissionSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: PermissionInclude | null
+    /**
+     * The data needed to update a Permission.
+     */
+    data: XOR<PermissionUpdateInput, PermissionUncheckedUpdateInput>
+    /**
+     * Choose, which Permission to update.
+     */
+    where: PermissionWhereUniqueInput
+  }
+
+
+  /**
+   * Permission updateMany
+   */
+  export type PermissionUpdateManyArgs = {
+    /**
+     * The data used to update Permissions.
+     */
+    data: XOR<PermissionUpdateManyMutationInput, PermissionUncheckedUpdateManyInput>
+    /**
+     * Filter which Permissions to update
+     */
+    where?: PermissionWhereInput
+  }
+
+
+  /**
+   * Permission upsert
+   */
+  export type PermissionUpsertArgs = {
+    /**
+     * Select specific fields to fetch from the Permission
+     */
+    select?: PermissionSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: PermissionInclude | null
+    /**
+     * The filter to search for the Permission to update in case it exists.
+     */
+    where: PermissionWhereUniqueInput
+    /**
+     * In case the Permission found by the `where` argument doesn't exist, create a new Permission with this data.
+     */
+    create: XOR<PermissionCreateInput, PermissionUncheckedCreateInput>
+    /**
+     * In case the Permission was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PermissionUpdateInput, PermissionUncheckedUpdateInput>
+  }
+
+
+  /**
+   * Permission delete
+   */
+  export type PermissionDeleteArgs = {
+    /**
+     * Select specific fields to fetch from the Permission
+     */
+    select?: PermissionSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: PermissionInclude | null
+    /**
+     * Filter which Permission to delete.
+     */
+    where: PermissionWhereUniqueInput
+  }
+
+
+  /**
+   * Permission deleteMany
+   */
+  export type PermissionDeleteManyArgs = {
+    /**
+     * Filter which Permissions to delete
+     */
+    where?: PermissionWhereInput
+  }
+
+
+  /**
+   * Permission.Permission
+   */
+  export type Permission$PermissionArgs = {
+    /**
+     * Select specific fields to fetch from the UserHasPermission
+     */
+    select?: UserHasPermissionSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserHasPermissionInclude | null
+    where?: UserHasPermissionWhereInput
+    orderBy?: Enumerable<UserHasPermissionOrderByWithRelationInput>
+    cursor?: UserHasPermissionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Enumerable<UserHasPermissionScalarFieldEnum>
+  }
+
+
+  /**
+   * Permission without action
+   */
+  export type PermissionArgs = {
+    /**
+     * Select specific fields to fetch from the Permission
+     */
+    select?: PermissionSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: PermissionInclude | null
+  }
+
+
+
+  /**
+   * Model UserHasPermission
+   */
+
+
+  export type AggregateUserHasPermission = {
+    _count: UserHasPermissionCountAggregateOutputType | null
+    _min: UserHasPermissionMinAggregateOutputType | null
+    _max: UserHasPermissionMaxAggregateOutputType | null
+  }
+
+  export type UserHasPermissionMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    permissionId: string | null
+    createdAt: Date | null
+  }
+
+  export type UserHasPermissionMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    permissionId: string | null
+    createdAt: Date | null
+  }
+
+  export type UserHasPermissionCountAggregateOutputType = {
+    id: number
+    userId: number
+    permissionId: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type UserHasPermissionMinAggregateInputType = {
+    id?: true
+    userId?: true
+    permissionId?: true
+    createdAt?: true
+  }
+
+  export type UserHasPermissionMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    permissionId?: true
+    createdAt?: true
+  }
+
+  export type UserHasPermissionCountAggregateInputType = {
+    id?: true
+    userId?: true
+    permissionId?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type UserHasPermissionAggregateArgs = {
+    /**
+     * Filter which UserHasPermission to aggregate.
+     */
+    where?: UserHasPermissionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserHasPermissions to fetch.
+     */
+    orderBy?: Enumerable<UserHasPermissionOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: UserHasPermissionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserHasPermissions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserHasPermissions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned UserHasPermissions
+    **/
+    _count?: true | UserHasPermissionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: UserHasPermissionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: UserHasPermissionMaxAggregateInputType
+  }
+
+  export type GetUserHasPermissionAggregateType<T extends UserHasPermissionAggregateArgs> = {
+        [P in keyof T & keyof AggregateUserHasPermission]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateUserHasPermission[P]>
+      : GetScalarType<T[P], AggregateUserHasPermission[P]>
+  }
+
+
+
+
+  export type UserHasPermissionGroupByArgs = {
+    where?: UserHasPermissionWhereInput
+    orderBy?: Enumerable<UserHasPermissionOrderByWithAggregationInput>
+    by: UserHasPermissionScalarFieldEnum[]
+    having?: UserHasPermissionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: UserHasPermissionCountAggregateInputType | true
+    _min?: UserHasPermissionMinAggregateInputType
+    _max?: UserHasPermissionMaxAggregateInputType
+  }
+
+
+  export type UserHasPermissionGroupByOutputType = {
+    id: string
+    userId: string | null
+    permissionId: string | null
+    createdAt: Date
+    _count: UserHasPermissionCountAggregateOutputType | null
+    _min: UserHasPermissionMinAggregateOutputType | null
+    _max: UserHasPermissionMaxAggregateOutputType | null
+  }
+
+  type GetUserHasPermissionGroupByPayload<T extends UserHasPermissionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickArray<UserHasPermissionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof UserHasPermissionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], UserHasPermissionGroupByOutputType[P]>
+            : GetScalarType<T[P], UserHasPermissionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type UserHasPermissionSelect = {
+    id?: boolean
+    userId?: boolean
+    permissionId?: boolean
+    createdAt?: boolean
+    User?: boolean | UserArgs
+    Permission?: boolean | PermissionArgs
+  }
+
+
+  export type UserHasPermissionInclude = {
+    User?: boolean | UserArgs
+    Permission?: boolean | PermissionArgs
+  }
+
+  export type UserHasPermissionGetPayload<S extends boolean | null | undefined | UserHasPermissionArgs> =
+    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
+    S extends true ? UserHasPermission :
+    S extends undefined ? never :
+    S extends { include: any } & (UserHasPermissionArgs | UserHasPermissionFindManyArgs)
+    ? UserHasPermission  & {
+    [P in TruthyKeys<S['include']>]:
+        P extends 'User' ? UserGetPayload<S['include'][P]> | null :
+        P extends 'Permission' ? PermissionGetPayload<S['include'][P]> | null :  never
+  } 
+    : S extends { select: any } & (UserHasPermissionArgs | UserHasPermissionFindManyArgs)
+      ? {
+    [P in TruthyKeys<S['select']>]:
+        P extends 'User' ? UserGetPayload<S['select'][P]> | null :
+        P extends 'Permission' ? PermissionGetPayload<S['select'][P]> | null :  P extends keyof UserHasPermission ? UserHasPermission[P] : never
+  } 
+      : UserHasPermission
+
+
+  type UserHasPermissionCountArgs = 
+    Omit<UserHasPermissionFindManyArgs, 'select' | 'include'> & {
+      select?: UserHasPermissionCountAggregateInputType | true
+    }
+
+  export interface UserHasPermissionDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
+
+    /**
+     * Find zero or one UserHasPermission that matches the filter.
+     * @param {UserHasPermissionFindUniqueArgs} args - Arguments to find a UserHasPermission
+     * @example
+     * // Get one UserHasPermission
+     * const userHasPermission = await prisma.userHasPermission.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends UserHasPermissionFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, UserHasPermissionFindUniqueArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'UserHasPermission'> extends True ? Prisma__UserHasPermissionClient<UserHasPermissionGetPayload<T>> : Prisma__UserHasPermissionClient<UserHasPermissionGetPayload<T> | null, null>
+
+    /**
+     * Find one UserHasPermission that matches the filter or throw an error  with `error.code='P2025'` 
+     *     if no matches were found.
+     * @param {UserHasPermissionFindUniqueOrThrowArgs} args - Arguments to find a UserHasPermission
+     * @example
+     * // Get one UserHasPermission
+     * const userHasPermission = await prisma.userHasPermission.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends UserHasPermissionFindUniqueOrThrowArgs>(
+      args?: SelectSubset<T, UserHasPermissionFindUniqueOrThrowArgs>
+    ): Prisma__UserHasPermissionClient<UserHasPermissionGetPayload<T>>
+
+    /**
+     * Find the first UserHasPermission that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserHasPermissionFindFirstArgs} args - Arguments to find a UserHasPermission
+     * @example
+     * // Get one UserHasPermission
+     * const userHasPermission = await prisma.userHasPermission.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends UserHasPermissionFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, UserHasPermissionFindFirstArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'UserHasPermission'> extends True ? Prisma__UserHasPermissionClient<UserHasPermissionGetPayload<T>> : Prisma__UserHasPermissionClient<UserHasPermissionGetPayload<T> | null, null>
+
+    /**
+     * Find the first UserHasPermission that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserHasPermissionFindFirstOrThrowArgs} args - Arguments to find a UserHasPermission
+     * @example
+     * // Get one UserHasPermission
+     * const userHasPermission = await prisma.userHasPermission.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends UserHasPermissionFindFirstOrThrowArgs>(
+      args?: SelectSubset<T, UserHasPermissionFindFirstOrThrowArgs>
+    ): Prisma__UserHasPermissionClient<UserHasPermissionGetPayload<T>>
+
+    /**
+     * Find zero or more UserHasPermissions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserHasPermissionFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all UserHasPermissions
+     * const userHasPermissions = await prisma.userHasPermission.findMany()
+     * 
+     * // Get first 10 UserHasPermissions
+     * const userHasPermissions = await prisma.userHasPermission.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const userHasPermissionWithIdOnly = await prisma.userHasPermission.findMany({ select: { id: true } })
+     * 
+    **/
+    findMany<T extends UserHasPermissionFindManyArgs>(
+      args?: SelectSubset<T, UserHasPermissionFindManyArgs>
+    ): Prisma.PrismaPromise<Array<UserHasPermissionGetPayload<T>>>
+
+    /**
+     * Create a UserHasPermission.
+     * @param {UserHasPermissionCreateArgs} args - Arguments to create a UserHasPermission.
+     * @example
+     * // Create one UserHasPermission
+     * const UserHasPermission = await prisma.userHasPermission.create({
+     *   data: {
+     *     // ... data to create a UserHasPermission
+     *   }
+     * })
+     * 
+    **/
+    create<T extends UserHasPermissionCreateArgs>(
+      args: SelectSubset<T, UserHasPermissionCreateArgs>
+    ): Prisma__UserHasPermissionClient<UserHasPermissionGetPayload<T>>
+
+    /**
+     * Create many UserHasPermissions.
+     *     @param {UserHasPermissionCreateManyArgs} args - Arguments to create many UserHasPermissions.
+     *     @example
+     *     // Create many UserHasPermissions
+     *     const userHasPermission = await prisma.userHasPermission.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends UserHasPermissionCreateManyArgs>(
+      args?: SelectSubset<T, UserHasPermissionCreateManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a UserHasPermission.
+     * @param {UserHasPermissionDeleteArgs} args - Arguments to delete one UserHasPermission.
+     * @example
+     * // Delete one UserHasPermission
+     * const UserHasPermission = await prisma.userHasPermission.delete({
+     *   where: {
+     *     // ... filter to delete one UserHasPermission
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends UserHasPermissionDeleteArgs>(
+      args: SelectSubset<T, UserHasPermissionDeleteArgs>
+    ): Prisma__UserHasPermissionClient<UserHasPermissionGetPayload<T>>
+
+    /**
+     * Update one UserHasPermission.
+     * @param {UserHasPermissionUpdateArgs} args - Arguments to update one UserHasPermission.
+     * @example
+     * // Update one UserHasPermission
+     * const userHasPermission = await prisma.userHasPermission.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends UserHasPermissionUpdateArgs>(
+      args: SelectSubset<T, UserHasPermissionUpdateArgs>
+    ): Prisma__UserHasPermissionClient<UserHasPermissionGetPayload<T>>
+
+    /**
+     * Delete zero or more UserHasPermissions.
+     * @param {UserHasPermissionDeleteManyArgs} args - Arguments to filter UserHasPermissions to delete.
+     * @example
+     * // Delete a few UserHasPermissions
+     * const { count } = await prisma.userHasPermission.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends UserHasPermissionDeleteManyArgs>(
+      args?: SelectSubset<T, UserHasPermissionDeleteManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more UserHasPermissions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserHasPermissionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many UserHasPermissions
+     * const userHasPermission = await prisma.userHasPermission.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends UserHasPermissionUpdateManyArgs>(
+      args: SelectSubset<T, UserHasPermissionUpdateManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one UserHasPermission.
+     * @param {UserHasPermissionUpsertArgs} args - Arguments to update or create a UserHasPermission.
+     * @example
+     * // Update or create a UserHasPermission
+     * const userHasPermission = await prisma.userHasPermission.upsert({
+     *   create: {
+     *     // ... data to create a UserHasPermission
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the UserHasPermission we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends UserHasPermissionUpsertArgs>(
+      args: SelectSubset<T, UserHasPermissionUpsertArgs>
+    ): Prisma__UserHasPermissionClient<UserHasPermissionGetPayload<T>>
+
+    /**
+     * Count the number of UserHasPermissions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserHasPermissionCountArgs} args - Arguments to filter UserHasPermissions to count.
+     * @example
+     * // Count the number of UserHasPermissions
+     * const count = await prisma.userHasPermission.count({
+     *   where: {
+     *     // ... the filter for the UserHasPermissions we want to count
+     *   }
+     * })
+    **/
+    count<T extends UserHasPermissionCountArgs>(
+      args?: Subset<T, UserHasPermissionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends _Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], UserHasPermissionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a UserHasPermission.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserHasPermissionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends UserHasPermissionAggregateArgs>(args: Subset<T, UserHasPermissionAggregateArgs>): Prisma.PrismaPromise<GetUserHasPermissionAggregateType<T>>
+
+    /**
+     * Group by UserHasPermission.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserHasPermissionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends UserHasPermissionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: UserHasPermissionGroupByArgs['orderBy'] }
+        : { orderBy?: UserHasPermissionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends TupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, UserHasPermissionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUserHasPermissionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for UserHasPermission.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__UserHasPermissionClient<T, Null = never> implements Prisma.PrismaPromise<T> {
+    private readonly _dmmf;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    readonly [Symbol.toStringTag]: 'PrismaPromise';
+    constructor(_dmmf: runtime.DMMFClass, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+
+    User<T extends UserArgs= {}>(args?: Subset<T, UserArgs>): Prisma__UserClient<UserGetPayload<T> | Null>;
+
+    Permission<T extends PermissionArgs= {}>(args?: Subset<T, PermissionArgs>): Prisma__PermissionClient<PermissionGetPayload<T> | Null>;
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+
+
+  // Custom InputTypes
+
+  /**
+   * UserHasPermission base type for findUnique actions
+   */
+  export type UserHasPermissionFindUniqueArgsBase = {
+    /**
+     * Select specific fields to fetch from the UserHasPermission
+     */
+    select?: UserHasPermissionSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserHasPermissionInclude | null
+    /**
+     * Filter, which UserHasPermission to fetch.
+     */
+    where: UserHasPermissionWhereUniqueInput
+  }
+
+  /**
+   * UserHasPermission findUnique
+   */
+  export interface UserHasPermissionFindUniqueArgs extends UserHasPermissionFindUniqueArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * UserHasPermission findUniqueOrThrow
+   */
+  export type UserHasPermissionFindUniqueOrThrowArgs = {
+    /**
+     * Select specific fields to fetch from the UserHasPermission
+     */
+    select?: UserHasPermissionSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserHasPermissionInclude | null
+    /**
+     * Filter, which UserHasPermission to fetch.
+     */
+    where: UserHasPermissionWhereUniqueInput
+  }
+
+
+  /**
+   * UserHasPermission base type for findFirst actions
+   */
+  export type UserHasPermissionFindFirstArgsBase = {
+    /**
+     * Select specific fields to fetch from the UserHasPermission
+     */
+    select?: UserHasPermissionSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserHasPermissionInclude | null
+    /**
+     * Filter, which UserHasPermission to fetch.
+     */
+    where?: UserHasPermissionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserHasPermissions to fetch.
+     */
+    orderBy?: Enumerable<UserHasPermissionOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UserHasPermissions.
+     */
+    cursor?: UserHasPermissionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserHasPermissions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserHasPermissions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UserHasPermissions.
+     */
+    distinct?: Enumerable<UserHasPermissionScalarFieldEnum>
+  }
+
+  /**
+   * UserHasPermission findFirst
+   */
+  export interface UserHasPermissionFindFirstArgs extends UserHasPermissionFindFirstArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * UserHasPermission findFirstOrThrow
+   */
+  export type UserHasPermissionFindFirstOrThrowArgs = {
+    /**
+     * Select specific fields to fetch from the UserHasPermission
+     */
+    select?: UserHasPermissionSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserHasPermissionInclude | null
+    /**
+     * Filter, which UserHasPermission to fetch.
+     */
+    where?: UserHasPermissionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserHasPermissions to fetch.
+     */
+    orderBy?: Enumerable<UserHasPermissionOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UserHasPermissions.
+     */
+    cursor?: UserHasPermissionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserHasPermissions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserHasPermissions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UserHasPermissions.
+     */
+    distinct?: Enumerable<UserHasPermissionScalarFieldEnum>
+  }
+
+
+  /**
+   * UserHasPermission findMany
+   */
+  export type UserHasPermissionFindManyArgs = {
+    /**
+     * Select specific fields to fetch from the UserHasPermission
+     */
+    select?: UserHasPermissionSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserHasPermissionInclude | null
+    /**
+     * Filter, which UserHasPermissions to fetch.
+     */
+    where?: UserHasPermissionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserHasPermissions to fetch.
+     */
+    orderBy?: Enumerable<UserHasPermissionOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing UserHasPermissions.
+     */
+    cursor?: UserHasPermissionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserHasPermissions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserHasPermissions.
+     */
+    skip?: number
+    distinct?: Enumerable<UserHasPermissionScalarFieldEnum>
+  }
+
+
+  /**
+   * UserHasPermission create
+   */
+  export type UserHasPermissionCreateArgs = {
+    /**
+     * Select specific fields to fetch from the UserHasPermission
+     */
+    select?: UserHasPermissionSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserHasPermissionInclude | null
+    /**
+     * The data needed to create a UserHasPermission.
+     */
+    data: XOR<UserHasPermissionCreateInput, UserHasPermissionUncheckedCreateInput>
+  }
+
+
+  /**
+   * UserHasPermission createMany
+   */
+  export type UserHasPermissionCreateManyArgs = {
+    /**
+     * The data used to create many UserHasPermissions.
+     */
+    data: Enumerable<UserHasPermissionCreateManyInput>
+    skipDuplicates?: boolean
+  }
+
+
+  /**
+   * UserHasPermission update
+   */
+  export type UserHasPermissionUpdateArgs = {
+    /**
+     * Select specific fields to fetch from the UserHasPermission
+     */
+    select?: UserHasPermissionSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserHasPermissionInclude | null
+    /**
+     * The data needed to update a UserHasPermission.
+     */
+    data: XOR<UserHasPermissionUpdateInput, UserHasPermissionUncheckedUpdateInput>
+    /**
+     * Choose, which UserHasPermission to update.
+     */
+    where: UserHasPermissionWhereUniqueInput
+  }
+
+
+  /**
+   * UserHasPermission updateMany
+   */
+  export type UserHasPermissionUpdateManyArgs = {
+    /**
+     * The data used to update UserHasPermissions.
+     */
+    data: XOR<UserHasPermissionUpdateManyMutationInput, UserHasPermissionUncheckedUpdateManyInput>
+    /**
+     * Filter which UserHasPermissions to update
+     */
+    where?: UserHasPermissionWhereInput
+  }
+
+
+  /**
+   * UserHasPermission upsert
+   */
+  export type UserHasPermissionUpsertArgs = {
+    /**
+     * Select specific fields to fetch from the UserHasPermission
+     */
+    select?: UserHasPermissionSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserHasPermissionInclude | null
+    /**
+     * The filter to search for the UserHasPermission to update in case it exists.
+     */
+    where: UserHasPermissionWhereUniqueInput
+    /**
+     * In case the UserHasPermission found by the `where` argument doesn't exist, create a new UserHasPermission with this data.
+     */
+    create: XOR<UserHasPermissionCreateInput, UserHasPermissionUncheckedCreateInput>
+    /**
+     * In case the UserHasPermission was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<UserHasPermissionUpdateInput, UserHasPermissionUncheckedUpdateInput>
+  }
+
+
+  /**
+   * UserHasPermission delete
+   */
+  export type UserHasPermissionDeleteArgs = {
+    /**
+     * Select specific fields to fetch from the UserHasPermission
+     */
+    select?: UserHasPermissionSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserHasPermissionInclude | null
+    /**
+     * Filter which UserHasPermission to delete.
+     */
+    where: UserHasPermissionWhereUniqueInput
+  }
+
+
+  /**
+   * UserHasPermission deleteMany
+   */
+  export type UserHasPermissionDeleteManyArgs = {
+    /**
+     * Filter which UserHasPermissions to delete
+     */
+    where?: UserHasPermissionWhereInput
+  }
+
+
+  /**
+   * UserHasPermission without action
+   */
+  export type UserHasPermissionArgs = {
+    /**
+     * Select specific fields to fetch from the UserHasPermission
+     */
+    select?: UserHasPermissionSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserHasPermissionInclude | null
+  }
+
+
+
+  /**
    * Enums
    */
 
   // Based on
   // https://github.com/microsoft/TypeScript/issues/3192#issuecomment-261720275
+
+  export const PermissionScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    createdAt: 'createdAt'
+  };
+
+  export type PermissionScalarFieldEnum = (typeof PermissionScalarFieldEnum)[keyof typeof PermissionScalarFieldEnum]
+
 
   export const QueryMode: {
     default: 'default',
@@ -3724,6 +5805,16 @@ export namespace Prisma {
   export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+  export const UserHasPermissionScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    permissionId: 'permissionId',
+    createdAt: 'createdAt'
+  };
+
+  export type UserHasPermissionScalarFieldEnum = (typeof UserHasPermissionScalarFieldEnum)[keyof typeof UserHasPermissionScalarFieldEnum]
+
+
   export const UserScalarFieldEnum: {
     id: 'id',
     email: 'email',
@@ -3753,6 +5844,7 @@ export namespace Prisma {
     phone?: StringNullableFilter | string | null
     password?: StringFilter | string
     createdAt?: DateTimeFilter | Date | string
+    permissions?: UserHasPermissionListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -3763,9 +5855,11 @@ export namespace Prisma {
     phone?: SortOrder
     password?: SortOrder
     createdAt?: SortOrder
+    permissions?: UserHasPermissionOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = {
+    id?: string
     email?: string
   }
 
@@ -3894,6 +5988,90 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter | Date | string
   }
 
+  export type PermissionWhereInput = {
+    AND?: Enumerable<PermissionWhereInput>
+    OR?: Enumerable<PermissionWhereInput>
+    NOT?: Enumerable<PermissionWhereInput>
+    id?: StringFilter | string
+    name?: StringFilter | string
+    createdAt?: DateTimeFilter | Date | string
+    Permission?: UserHasPermissionListRelationFilter
+  }
+
+  export type PermissionOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    Permission?: UserHasPermissionOrderByRelationAggregateInput
+  }
+
+  export type PermissionWhereUniqueInput = {
+    id?: string
+  }
+
+  export type PermissionOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    _count?: PermissionCountOrderByAggregateInput
+    _max?: PermissionMaxOrderByAggregateInput
+    _min?: PermissionMinOrderByAggregateInput
+  }
+
+  export type PermissionScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<PermissionScalarWhereWithAggregatesInput>
+    OR?: Enumerable<PermissionScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<PermissionScalarWhereWithAggregatesInput>
+    id?: StringWithAggregatesFilter | string
+    name?: StringWithAggregatesFilter | string
+    createdAt?: DateTimeWithAggregatesFilter | Date | string
+  }
+
+  export type UserHasPermissionWhereInput = {
+    AND?: Enumerable<UserHasPermissionWhereInput>
+    OR?: Enumerable<UserHasPermissionWhereInput>
+    NOT?: Enumerable<UserHasPermissionWhereInput>
+    id?: StringFilter | string
+    userId?: StringNullableFilter | string | null
+    permissionId?: StringNullableFilter | string | null
+    createdAt?: DateTimeFilter | Date | string
+    User?: XOR<UserRelationFilter, UserWhereInput> | null
+    Permission?: XOR<PermissionRelationFilter, PermissionWhereInput> | null
+  }
+
+  export type UserHasPermissionOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    permissionId?: SortOrder
+    createdAt?: SortOrder
+    User?: UserOrderByWithRelationInput
+    Permission?: PermissionOrderByWithRelationInput
+  }
+
+  export type UserHasPermissionWhereUniqueInput = {
+    id?: string
+  }
+
+  export type UserHasPermissionOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    permissionId?: SortOrder
+    createdAt?: SortOrder
+    _count?: UserHasPermissionCountOrderByAggregateInput
+    _max?: UserHasPermissionMaxOrderByAggregateInput
+    _min?: UserHasPermissionMinOrderByAggregateInput
+  }
+
+  export type UserHasPermissionScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<UserHasPermissionScalarWhereWithAggregatesInput>
+    OR?: Enumerable<UserHasPermissionScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<UserHasPermissionScalarWhereWithAggregatesInput>
+    id?: StringWithAggregatesFilter | string
+    userId?: StringNullableWithAggregatesFilter | string | null
+    permissionId?: StringNullableWithAggregatesFilter | string | null
+    createdAt?: DateTimeWithAggregatesFilter | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string | null
     email: string
@@ -3902,6 +6080,7 @@ export namespace Prisma {
     phone?: string | null
     password: string
     createdAt?: Date | string
+    permissions?: UserHasPermissionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -3912,6 +6091,7 @@ export namespace Prisma {
     phone?: string | null
     password: string
     createdAt?: Date | string
+    permissions?: UserHasPermissionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -3922,6 +6102,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     password?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    permissions?: UserHasPermissionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -3932,6 +6113,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     password?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    permissions?: UserHasPermissionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -4086,6 +6268,99 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type PermissionCreateInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    Permission?: UserHasPermissionCreateNestedManyWithoutPermissionInput
+  }
+
+  export type PermissionUncheckedCreateInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    Permission?: UserHasPermissionUncheckedCreateNestedManyWithoutPermissionInput
+  }
+
+  export type PermissionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    Permission?: UserHasPermissionUpdateManyWithoutPermissionNestedInput
+  }
+
+  export type PermissionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    Permission?: UserHasPermissionUncheckedUpdateManyWithoutPermissionNestedInput
+  }
+
+  export type PermissionCreateManyInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+  }
+
+  export type PermissionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PermissionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserHasPermissionCreateInput = {
+    id?: string
+    createdAt?: Date | string
+    User?: UserCreateNestedOneWithoutPermissionsInput
+    Permission?: PermissionCreateNestedOneWithoutPermissionInput
+  }
+
+  export type UserHasPermissionUncheckedCreateInput = {
+    id?: string
+    userId?: string | null
+    permissionId?: string | null
+    createdAt?: Date | string
+  }
+
+  export type UserHasPermissionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    User?: UserUpdateOneWithoutPermissionsNestedInput
+    Permission?: PermissionUpdateOneWithoutPermissionNestedInput
+  }
+
+  export type UserHasPermissionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    permissionId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserHasPermissionCreateManyInput = {
+    id?: string
+    userId?: string | null
+    permissionId?: string | null
+    createdAt?: Date | string
+  }
+
+  export type UserHasPermissionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserHasPermissionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    permissionId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringNullableFilter = {
     equals?: string | null
     in?: Enumerable<string> | null
@@ -4125,6 +6400,16 @@ export namespace Prisma {
     gt?: Date | string
     gte?: Date | string
     not?: NestedDateTimeFilter | Date | string
+  }
+
+  export type UserHasPermissionListRelationFilter = {
+    every?: UserHasPermissionWhereInput
+    some?: UserHasPermissionWhereInput
+    none?: UserHasPermissionWhereInput
+  }
+
+  export type UserHasPermissionOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type UserCountOrderByAggregateInput = {
@@ -4273,6 +6558,69 @@ export namespace Prisma {
     createdAt?: SortOrder
   }
 
+  export type PermissionCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type PermissionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type PermissionMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type UserRelationFilter = {
+    is?: UserWhereInput | null
+    isNot?: UserWhereInput | null
+  }
+
+  export type PermissionRelationFilter = {
+    is?: PermissionWhereInput | null
+    isNot?: PermissionWhereInput | null
+  }
+
+  export type UserHasPermissionCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    permissionId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type UserHasPermissionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    permissionId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type UserHasPermissionMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    permissionId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type UserHasPermissionCreateNestedManyWithoutUserInput = {
+    create?: XOR<Enumerable<UserHasPermissionCreateWithoutUserInput>, Enumerable<UserHasPermissionUncheckedCreateWithoutUserInput>>
+    connectOrCreate?: Enumerable<UserHasPermissionCreateOrConnectWithoutUserInput>
+    createMany?: UserHasPermissionCreateManyUserInputEnvelope
+    connect?: Enumerable<UserHasPermissionWhereUniqueInput>
+  }
+
+  export type UserHasPermissionUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<Enumerable<UserHasPermissionCreateWithoutUserInput>, Enumerable<UserHasPermissionUncheckedCreateWithoutUserInput>>
+    connectOrCreate?: Enumerable<UserHasPermissionCreateOrConnectWithoutUserInput>
+    createMany?: UserHasPermissionCreateManyUserInputEnvelope
+    connect?: Enumerable<UserHasPermissionWhereUniqueInput>
+  }
+
   export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null
   }
@@ -4283,6 +6631,34 @@ export namespace Prisma {
 
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
+  }
+
+  export type UserHasPermissionUpdateManyWithoutUserNestedInput = {
+    create?: XOR<Enumerable<UserHasPermissionCreateWithoutUserInput>, Enumerable<UserHasPermissionUncheckedCreateWithoutUserInput>>
+    connectOrCreate?: Enumerable<UserHasPermissionCreateOrConnectWithoutUserInput>
+    upsert?: Enumerable<UserHasPermissionUpsertWithWhereUniqueWithoutUserInput>
+    createMany?: UserHasPermissionCreateManyUserInputEnvelope
+    set?: Enumerable<UserHasPermissionWhereUniqueInput>
+    disconnect?: Enumerable<UserHasPermissionWhereUniqueInput>
+    delete?: Enumerable<UserHasPermissionWhereUniqueInput>
+    connect?: Enumerable<UserHasPermissionWhereUniqueInput>
+    update?: Enumerable<UserHasPermissionUpdateWithWhereUniqueWithoutUserInput>
+    updateMany?: Enumerable<UserHasPermissionUpdateManyWithWhereWithoutUserInput>
+    deleteMany?: Enumerable<UserHasPermissionScalarWhereInput>
+  }
+
+  export type UserHasPermissionUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<Enumerable<UserHasPermissionCreateWithoutUserInput>, Enumerable<UserHasPermissionUncheckedCreateWithoutUserInput>>
+    connectOrCreate?: Enumerable<UserHasPermissionCreateOrConnectWithoutUserInput>
+    upsert?: Enumerable<UserHasPermissionUpsertWithWhereUniqueWithoutUserInput>
+    createMany?: UserHasPermissionCreateManyUserInputEnvelope
+    set?: Enumerable<UserHasPermissionWhereUniqueInput>
+    disconnect?: Enumerable<UserHasPermissionWhereUniqueInput>
+    delete?: Enumerable<UserHasPermissionWhereUniqueInput>
+    connect?: Enumerable<UserHasPermissionWhereUniqueInput>
+    update?: Enumerable<UserHasPermissionUpdateWithWhereUniqueWithoutUserInput>
+    updateMany?: Enumerable<UserHasPermissionUpdateManyWithWhereWithoutUserInput>
+    deleteMany?: Enumerable<UserHasPermissionScalarWhereInput>
   }
 
   export type ServerTagsCreateNestedManyWithoutServerInput = {
@@ -4341,6 +6717,80 @@ export namespace Prisma {
     delete?: boolean
     connect?: ServerWhereUniqueInput
     update?: XOR<ServerUpdateWithoutTagsInput, ServerUncheckedUpdateWithoutTagsInput>
+  }
+
+  export type UserHasPermissionCreateNestedManyWithoutPermissionInput = {
+    create?: XOR<Enumerable<UserHasPermissionCreateWithoutPermissionInput>, Enumerable<UserHasPermissionUncheckedCreateWithoutPermissionInput>>
+    connectOrCreate?: Enumerable<UserHasPermissionCreateOrConnectWithoutPermissionInput>
+    createMany?: UserHasPermissionCreateManyPermissionInputEnvelope
+    connect?: Enumerable<UserHasPermissionWhereUniqueInput>
+  }
+
+  export type UserHasPermissionUncheckedCreateNestedManyWithoutPermissionInput = {
+    create?: XOR<Enumerable<UserHasPermissionCreateWithoutPermissionInput>, Enumerable<UserHasPermissionUncheckedCreateWithoutPermissionInput>>
+    connectOrCreate?: Enumerable<UserHasPermissionCreateOrConnectWithoutPermissionInput>
+    createMany?: UserHasPermissionCreateManyPermissionInputEnvelope
+    connect?: Enumerable<UserHasPermissionWhereUniqueInput>
+  }
+
+  export type UserHasPermissionUpdateManyWithoutPermissionNestedInput = {
+    create?: XOR<Enumerable<UserHasPermissionCreateWithoutPermissionInput>, Enumerable<UserHasPermissionUncheckedCreateWithoutPermissionInput>>
+    connectOrCreate?: Enumerable<UserHasPermissionCreateOrConnectWithoutPermissionInput>
+    upsert?: Enumerable<UserHasPermissionUpsertWithWhereUniqueWithoutPermissionInput>
+    createMany?: UserHasPermissionCreateManyPermissionInputEnvelope
+    set?: Enumerable<UserHasPermissionWhereUniqueInput>
+    disconnect?: Enumerable<UserHasPermissionWhereUniqueInput>
+    delete?: Enumerable<UserHasPermissionWhereUniqueInput>
+    connect?: Enumerable<UserHasPermissionWhereUniqueInput>
+    update?: Enumerable<UserHasPermissionUpdateWithWhereUniqueWithoutPermissionInput>
+    updateMany?: Enumerable<UserHasPermissionUpdateManyWithWhereWithoutPermissionInput>
+    deleteMany?: Enumerable<UserHasPermissionScalarWhereInput>
+  }
+
+  export type UserHasPermissionUncheckedUpdateManyWithoutPermissionNestedInput = {
+    create?: XOR<Enumerable<UserHasPermissionCreateWithoutPermissionInput>, Enumerable<UserHasPermissionUncheckedCreateWithoutPermissionInput>>
+    connectOrCreate?: Enumerable<UserHasPermissionCreateOrConnectWithoutPermissionInput>
+    upsert?: Enumerable<UserHasPermissionUpsertWithWhereUniqueWithoutPermissionInput>
+    createMany?: UserHasPermissionCreateManyPermissionInputEnvelope
+    set?: Enumerable<UserHasPermissionWhereUniqueInput>
+    disconnect?: Enumerable<UserHasPermissionWhereUniqueInput>
+    delete?: Enumerable<UserHasPermissionWhereUniqueInput>
+    connect?: Enumerable<UserHasPermissionWhereUniqueInput>
+    update?: Enumerable<UserHasPermissionUpdateWithWhereUniqueWithoutPermissionInput>
+    updateMany?: Enumerable<UserHasPermissionUpdateManyWithWhereWithoutPermissionInput>
+    deleteMany?: Enumerable<UserHasPermissionScalarWhereInput>
+  }
+
+  export type UserCreateNestedOneWithoutPermissionsInput = {
+    create?: XOR<UserCreateWithoutPermissionsInput, UserUncheckedCreateWithoutPermissionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPermissionsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type PermissionCreateNestedOneWithoutPermissionInput = {
+    create?: XOR<PermissionCreateWithoutPermissionInput, PermissionUncheckedCreateWithoutPermissionInput>
+    connectOrCreate?: PermissionCreateOrConnectWithoutPermissionInput
+    connect?: PermissionWhereUniqueInput
+  }
+
+  export type UserUpdateOneWithoutPermissionsNestedInput = {
+    create?: XOR<UserCreateWithoutPermissionsInput, UserUncheckedCreateWithoutPermissionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPermissionsInput
+    upsert?: UserUpsertWithoutPermissionsInput
+    disconnect?: boolean
+    delete?: boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<UserUpdateWithoutPermissionsInput, UserUncheckedUpdateWithoutPermissionsInput>
+  }
+
+  export type PermissionUpdateOneWithoutPermissionNestedInput = {
+    create?: XOR<PermissionCreateWithoutPermissionInput, PermissionUncheckedCreateWithoutPermissionInput>
+    connectOrCreate?: PermissionCreateOrConnectWithoutPermissionInput
+    upsert?: PermissionUpsertWithoutPermissionInput
+    disconnect?: boolean
+    delete?: boolean
+    connect?: PermissionWhereUniqueInput
+    update?: XOR<PermissionUpdateWithoutPermissionInput, PermissionUncheckedUpdateWithoutPermissionInput>
   }
 
   export type NestedStringNullableFilter = {
@@ -4452,6 +6902,54 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter
   }
 
+  export type UserHasPermissionCreateWithoutUserInput = {
+    id?: string
+    createdAt?: Date | string
+    Permission?: PermissionCreateNestedOneWithoutPermissionInput
+  }
+
+  export type UserHasPermissionUncheckedCreateWithoutUserInput = {
+    id?: string
+    permissionId?: string | null
+    createdAt?: Date | string
+  }
+
+  export type UserHasPermissionCreateOrConnectWithoutUserInput = {
+    where: UserHasPermissionWhereUniqueInput
+    create: XOR<UserHasPermissionCreateWithoutUserInput, UserHasPermissionUncheckedCreateWithoutUserInput>
+  }
+
+  export type UserHasPermissionCreateManyUserInputEnvelope = {
+    data: Enumerable<UserHasPermissionCreateManyUserInput>
+    skipDuplicates?: boolean
+  }
+
+  export type UserHasPermissionUpsertWithWhereUniqueWithoutUserInput = {
+    where: UserHasPermissionWhereUniqueInput
+    update: XOR<UserHasPermissionUpdateWithoutUserInput, UserHasPermissionUncheckedUpdateWithoutUserInput>
+    create: XOR<UserHasPermissionCreateWithoutUserInput, UserHasPermissionUncheckedCreateWithoutUserInput>
+  }
+
+  export type UserHasPermissionUpdateWithWhereUniqueWithoutUserInput = {
+    where: UserHasPermissionWhereUniqueInput
+    data: XOR<UserHasPermissionUpdateWithoutUserInput, UserHasPermissionUncheckedUpdateWithoutUserInput>
+  }
+
+  export type UserHasPermissionUpdateManyWithWhereWithoutUserInput = {
+    where: UserHasPermissionScalarWhereInput
+    data: XOR<UserHasPermissionUpdateManyMutationInput, UserHasPermissionUncheckedUpdateManyWithoutPermissionsInput>
+  }
+
+  export type UserHasPermissionScalarWhereInput = {
+    AND?: Enumerable<UserHasPermissionScalarWhereInput>
+    OR?: Enumerable<UserHasPermissionScalarWhereInput>
+    NOT?: Enumerable<UserHasPermissionScalarWhereInput>
+    id?: StringFilter | string
+    userId?: StringNullableFilter | string | null
+    permissionId?: StringNullableFilter | string | null
+    createdAt?: DateTimeFilter | Date | string
+  }
+
   export type ServerTagsCreateWithoutServerInput = {
     id?: string
     name: string
@@ -4550,6 +7048,152 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type UserHasPermissionCreateWithoutPermissionInput = {
+    id?: string
+    createdAt?: Date | string
+    User?: UserCreateNestedOneWithoutPermissionsInput
+  }
+
+  export type UserHasPermissionUncheckedCreateWithoutPermissionInput = {
+    id?: string
+    userId?: string | null
+    createdAt?: Date | string
+  }
+
+  export type UserHasPermissionCreateOrConnectWithoutPermissionInput = {
+    where: UserHasPermissionWhereUniqueInput
+    create: XOR<UserHasPermissionCreateWithoutPermissionInput, UserHasPermissionUncheckedCreateWithoutPermissionInput>
+  }
+
+  export type UserHasPermissionCreateManyPermissionInputEnvelope = {
+    data: Enumerable<UserHasPermissionCreateManyPermissionInput>
+    skipDuplicates?: boolean
+  }
+
+  export type UserHasPermissionUpsertWithWhereUniqueWithoutPermissionInput = {
+    where: UserHasPermissionWhereUniqueInput
+    update: XOR<UserHasPermissionUpdateWithoutPermissionInput, UserHasPermissionUncheckedUpdateWithoutPermissionInput>
+    create: XOR<UserHasPermissionCreateWithoutPermissionInput, UserHasPermissionUncheckedCreateWithoutPermissionInput>
+  }
+
+  export type UserHasPermissionUpdateWithWhereUniqueWithoutPermissionInput = {
+    where: UserHasPermissionWhereUniqueInput
+    data: XOR<UserHasPermissionUpdateWithoutPermissionInput, UserHasPermissionUncheckedUpdateWithoutPermissionInput>
+  }
+
+  export type UserHasPermissionUpdateManyWithWhereWithoutPermissionInput = {
+    where: UserHasPermissionScalarWhereInput
+    data: XOR<UserHasPermissionUpdateManyMutationInput, UserHasPermissionUncheckedUpdateManyWithoutPermissionInput>
+  }
+
+  export type UserCreateWithoutPermissionsInput = {
+    id?: string | null
+    email: string
+    name: string
+    birth: Date | string
+    phone?: string | null
+    password: string
+    createdAt?: Date | string
+  }
+
+  export type UserUncheckedCreateWithoutPermissionsInput = {
+    id?: string | null
+    email: string
+    name: string
+    birth: Date | string
+    phone?: string | null
+    password: string
+    createdAt?: Date | string
+  }
+
+  export type UserCreateOrConnectWithoutPermissionsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutPermissionsInput, UserUncheckedCreateWithoutPermissionsInput>
+  }
+
+  export type PermissionCreateWithoutPermissionInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+  }
+
+  export type PermissionUncheckedCreateWithoutPermissionInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+  }
+
+  export type PermissionCreateOrConnectWithoutPermissionInput = {
+    where: PermissionWhereUniqueInput
+    create: XOR<PermissionCreateWithoutPermissionInput, PermissionUncheckedCreateWithoutPermissionInput>
+  }
+
+  export type UserUpsertWithoutPermissionsInput = {
+    update: XOR<UserUpdateWithoutPermissionsInput, UserUncheckedUpdateWithoutPermissionsInput>
+    create: XOR<UserCreateWithoutPermissionsInput, UserUncheckedCreateWithoutPermissionsInput>
+  }
+
+  export type UserUpdateWithoutPermissionsInput = {
+    id?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    birth?: DateTimeFieldUpdateOperationsInput | Date | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserUncheckedUpdateWithoutPermissionsInput = {
+    id?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    birth?: DateTimeFieldUpdateOperationsInput | Date | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PermissionUpsertWithoutPermissionInput = {
+    update: XOR<PermissionUpdateWithoutPermissionInput, PermissionUncheckedUpdateWithoutPermissionInput>
+    create: XOR<PermissionCreateWithoutPermissionInput, PermissionUncheckedCreateWithoutPermissionInput>
+  }
+
+  export type PermissionUpdateWithoutPermissionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PermissionUncheckedUpdateWithoutPermissionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserHasPermissionCreateManyUserInput = {
+    id?: string
+    permissionId?: string | null
+    createdAt?: Date | string
+  }
+
+  export type UserHasPermissionUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    Permission?: PermissionUpdateOneWithoutPermissionNestedInput
+  }
+
+  export type UserHasPermissionUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    permissionId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserHasPermissionUncheckedUpdateManyWithoutPermissionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    permissionId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type ServerTagsCreateManyServerInput = {
     id?: string
     name: string
@@ -4571,6 +7215,30 @@ export namespace Prisma {
   export type ServerTagsUncheckedUpdateManyWithoutTagsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserHasPermissionCreateManyPermissionInput = {
+    id?: string
+    userId?: string | null
+    createdAt?: Date | string
+  }
+
+  export type UserHasPermissionUpdateWithoutPermissionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    User?: UserUpdateOneWithoutPermissionsNestedInput
+  }
+
+  export type UserHasPermissionUncheckedUpdateWithoutPermissionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserHasPermissionUncheckedUpdateManyWithoutPermissionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

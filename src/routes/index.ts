@@ -13,7 +13,7 @@ const routes = Router();
 
 routes.use("/user", userRoute);
 routes.use("/server", serverRoute);
-routes.use("/avaliation", isAuth, avaliationRoute);
+routes.use("/avaliation", avaliationRoute);
 routes.use("/user/permissions", permissionsRoute);
 routes.use("/admin", isAuth, isAdmin, adminRoute);
 

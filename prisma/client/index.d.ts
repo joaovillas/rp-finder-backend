@@ -70,6 +70,18 @@ export type UserHasPermission = {
   createdAt: Date
 }
 
+/**
+ * Model ServerAvaliation
+ * 
+ */
+export type ServerAvaliation = {
+  id: string
+  serverId: string | null
+  userId: string | null
+  avaliation: number
+  createdAt: Date
+}
+
 
 /**
  * ##  Prisma Client ʲˢ
@@ -237,6 +249,16 @@ export class PrismaClient<
     * ```
     */
   get userHasPermission(): Prisma.UserHasPermissionDelegate<GlobalReject>;
+
+  /**
+   * `prisma.serverAvaliation`: Exposes CRUD operations for the **ServerAvaliation** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ServerAvaliations
+    * const serverAvaliations = await prisma.serverAvaliation.findMany()
+    * ```
+    */
+  get serverAvaliation(): Prisma.ServerAvaliationDelegate<GlobalReject>;
 }
 
 export namespace Prisma {
@@ -710,7 +732,8 @@ export namespace Prisma {
     Server: 'Server',
     ServerTags: 'ServerTags',
     Permission: 'Permission',
-    UserHasPermission: 'UserHasPermission'
+    UserHasPermission: 'UserHasPermission',
+    ServerAvaliation: 'ServerAvaliation'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -878,10 +901,12 @@ export namespace Prisma {
 
   export type UserCountOutputType = {
     permissions: number
+    ServerAvaliation: number
   }
 
   export type UserCountOutputTypeSelect = {
     permissions?: boolean
+    ServerAvaliation?: boolean
   }
 
   export type UserCountOutputTypeGetPayload<S extends boolean | null | undefined | UserCountOutputTypeArgs> =
@@ -921,10 +946,12 @@ export namespace Prisma {
 
   export type ServerCountOutputType = {
     tags: number
+    ServerAvaliation: number
   }
 
   export type ServerCountOutputTypeSelect = {
     tags?: boolean
+    ServerAvaliation?: boolean
   }
 
   export type ServerCountOutputTypeGetPayload<S extends boolean | null | undefined | ServerCountOutputTypeArgs> =
@@ -1187,12 +1214,14 @@ export namespace Prisma {
     password?: boolean
     createdAt?: boolean
     permissions?: boolean | User$permissionsArgs
+    ServerAvaliation?: boolean | User$ServerAvaliationArgs
     _count?: boolean | UserCountOutputTypeArgs
   }
 
 
   export type UserInclude = {
     permissions?: boolean | User$permissionsArgs
+    ServerAvaliation?: boolean | User$ServerAvaliationArgs
     _count?: boolean | UserCountOutputTypeArgs
   }
 
@@ -1204,12 +1233,14 @@ export namespace Prisma {
     ? User  & {
     [P in TruthyKeys<S['include']>]:
         P extends 'permissions' ? Array < UserHasPermissionGetPayload<S['include'][P]>>  :
+        P extends 'ServerAvaliation' ? Array < ServerAvaliationGetPayload<S['include'][P]>>  :
         P extends '_count' ? UserCountOutputTypeGetPayload<S['include'][P]> :  never
   } 
     : S extends { select: any } & (UserArgs | UserFindManyArgs)
       ? {
     [P in TruthyKeys<S['select']>]:
         P extends 'permissions' ? Array < UserHasPermissionGetPayload<S['select'][P]>>  :
+        P extends 'ServerAvaliation' ? Array < ServerAvaliationGetPayload<S['select'][P]>>  :
         P extends '_count' ? UserCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof User ? User[P] : never
   } 
       : User
@@ -1583,6 +1614,8 @@ export namespace Prisma {
     constructor(_dmmf: runtime.DMMFClass, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
 
     permissions<T extends User$permissionsArgs= {}>(args?: Subset<T, User$permissionsArgs>): Prisma.PrismaPromise<Array<UserHasPermissionGetPayload<T>>| Null>;
+
+    ServerAvaliation<T extends User$ServerAvaliationArgs= {}>(args?: Subset<T, User$ServerAvaliationArgs>): Prisma.PrismaPromise<Array<ServerAvaliationGetPayload<T>>| Null>;
 
     private get _document();
     /**
@@ -1961,6 +1994,27 @@ export namespace Prisma {
 
 
   /**
+   * User.ServerAvaliation
+   */
+  export type User$ServerAvaliationArgs = {
+    /**
+     * Select specific fields to fetch from the ServerAvaliation
+     */
+    select?: ServerAvaliationSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ServerAvaliationInclude | null
+    where?: ServerAvaliationWhereInput
+    orderBy?: Enumerable<ServerAvaliationOrderByWithRelationInput>
+    cursor?: ServerAvaliationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Enumerable<ServerAvaliationScalarFieldEnum>
+  }
+
+
+  /**
    * User without action
    */
   export type UserArgs = {
@@ -2159,12 +2213,14 @@ export namespace Prisma {
     logo?: boolean
     createdAt?: boolean
     tags?: boolean | Server$tagsArgs
+    ServerAvaliation?: boolean | Server$ServerAvaliationArgs
     _count?: boolean | ServerCountOutputTypeArgs
   }
 
 
   export type ServerInclude = {
     tags?: boolean | Server$tagsArgs
+    ServerAvaliation?: boolean | Server$ServerAvaliationArgs
     _count?: boolean | ServerCountOutputTypeArgs
   }
 
@@ -2176,12 +2232,14 @@ export namespace Prisma {
     ? Server  & {
     [P in TruthyKeys<S['include']>]:
         P extends 'tags' ? Array < ServerTagsGetPayload<S['include'][P]>>  :
+        P extends 'ServerAvaliation' ? Array < ServerAvaliationGetPayload<S['include'][P]>>  :
         P extends '_count' ? ServerCountOutputTypeGetPayload<S['include'][P]> :  never
   } 
     : S extends { select: any } & (ServerArgs | ServerFindManyArgs)
       ? {
     [P in TruthyKeys<S['select']>]:
         P extends 'tags' ? Array < ServerTagsGetPayload<S['select'][P]>>  :
+        P extends 'ServerAvaliation' ? Array < ServerAvaliationGetPayload<S['select'][P]>>  :
         P extends '_count' ? ServerCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof Server ? Server[P] : never
   } 
       : Server
@@ -2556,6 +2614,8 @@ export namespace Prisma {
 
     tags<T extends Server$tagsArgs= {}>(args?: Subset<T, Server$tagsArgs>): Prisma.PrismaPromise<Array<ServerTagsGetPayload<T>>| Null>;
 
+    ServerAvaliation<T extends Server$ServerAvaliationArgs= {}>(args?: Subset<T, Server$ServerAvaliationArgs>): Prisma.PrismaPromise<Array<ServerAvaliationGetPayload<T>>| Null>;
+
     private get _document();
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -2929,6 +2989,27 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: Enumerable<ServerTagsScalarFieldEnum>
+  }
+
+
+  /**
+   * Server.ServerAvaliation
+   */
+  export type Server$ServerAvaliationArgs = {
+    /**
+     * Select specific fields to fetch from the ServerAvaliation
+     */
+    select?: ServerAvaliationSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ServerAvaliationInclude | null
+    where?: ServerAvaliationWhereInput
+    orderBy?: Enumerable<ServerAvaliationOrderByWithRelationInput>
+    cursor?: ServerAvaliationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Enumerable<ServerAvaliationScalarFieldEnum>
   }
 
 
@@ -5741,6 +5822,977 @@ export namespace Prisma {
 
 
   /**
+   * Model ServerAvaliation
+   */
+
+
+  export type AggregateServerAvaliation = {
+    _count: ServerAvaliationCountAggregateOutputType | null
+    _avg: ServerAvaliationAvgAggregateOutputType | null
+    _sum: ServerAvaliationSumAggregateOutputType | null
+    _min: ServerAvaliationMinAggregateOutputType | null
+    _max: ServerAvaliationMaxAggregateOutputType | null
+  }
+
+  export type ServerAvaliationAvgAggregateOutputType = {
+    avaliation: number | null
+  }
+
+  export type ServerAvaliationSumAggregateOutputType = {
+    avaliation: number | null
+  }
+
+  export type ServerAvaliationMinAggregateOutputType = {
+    id: string | null
+    serverId: string | null
+    userId: string | null
+    avaliation: number | null
+    createdAt: Date | null
+  }
+
+  export type ServerAvaliationMaxAggregateOutputType = {
+    id: string | null
+    serverId: string | null
+    userId: string | null
+    avaliation: number | null
+    createdAt: Date | null
+  }
+
+  export type ServerAvaliationCountAggregateOutputType = {
+    id: number
+    serverId: number
+    userId: number
+    avaliation: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type ServerAvaliationAvgAggregateInputType = {
+    avaliation?: true
+  }
+
+  export type ServerAvaliationSumAggregateInputType = {
+    avaliation?: true
+  }
+
+  export type ServerAvaliationMinAggregateInputType = {
+    id?: true
+    serverId?: true
+    userId?: true
+    avaliation?: true
+    createdAt?: true
+  }
+
+  export type ServerAvaliationMaxAggregateInputType = {
+    id?: true
+    serverId?: true
+    userId?: true
+    avaliation?: true
+    createdAt?: true
+  }
+
+  export type ServerAvaliationCountAggregateInputType = {
+    id?: true
+    serverId?: true
+    userId?: true
+    avaliation?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type ServerAvaliationAggregateArgs = {
+    /**
+     * Filter which ServerAvaliation to aggregate.
+     */
+    where?: ServerAvaliationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ServerAvaliations to fetch.
+     */
+    orderBy?: Enumerable<ServerAvaliationOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ServerAvaliationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ServerAvaliations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ServerAvaliations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ServerAvaliations
+    **/
+    _count?: true | ServerAvaliationCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ServerAvaliationAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ServerAvaliationSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ServerAvaliationMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ServerAvaliationMaxAggregateInputType
+  }
+
+  export type GetServerAvaliationAggregateType<T extends ServerAvaliationAggregateArgs> = {
+        [P in keyof T & keyof AggregateServerAvaliation]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateServerAvaliation[P]>
+      : GetScalarType<T[P], AggregateServerAvaliation[P]>
+  }
+
+
+
+
+  export type ServerAvaliationGroupByArgs = {
+    where?: ServerAvaliationWhereInput
+    orderBy?: Enumerable<ServerAvaliationOrderByWithAggregationInput>
+    by: ServerAvaliationScalarFieldEnum[]
+    having?: ServerAvaliationScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ServerAvaliationCountAggregateInputType | true
+    _avg?: ServerAvaliationAvgAggregateInputType
+    _sum?: ServerAvaliationSumAggregateInputType
+    _min?: ServerAvaliationMinAggregateInputType
+    _max?: ServerAvaliationMaxAggregateInputType
+  }
+
+
+  export type ServerAvaliationGroupByOutputType = {
+    id: string
+    serverId: string | null
+    userId: string | null
+    avaliation: number
+    createdAt: Date
+    _count: ServerAvaliationCountAggregateOutputType | null
+    _avg: ServerAvaliationAvgAggregateOutputType | null
+    _sum: ServerAvaliationSumAggregateOutputType | null
+    _min: ServerAvaliationMinAggregateOutputType | null
+    _max: ServerAvaliationMaxAggregateOutputType | null
+  }
+
+  type GetServerAvaliationGroupByPayload<T extends ServerAvaliationGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickArray<ServerAvaliationGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ServerAvaliationGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ServerAvaliationGroupByOutputType[P]>
+            : GetScalarType<T[P], ServerAvaliationGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ServerAvaliationSelect = {
+    id?: boolean
+    serverId?: boolean
+    userId?: boolean
+    avaliation?: boolean
+    createdAt?: boolean
+    server?: boolean | ServerArgs
+    user?: boolean | UserArgs
+  }
+
+
+  export type ServerAvaliationInclude = {
+    server?: boolean | ServerArgs
+    user?: boolean | UserArgs
+  }
+
+  export type ServerAvaliationGetPayload<S extends boolean | null | undefined | ServerAvaliationArgs> =
+    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
+    S extends true ? ServerAvaliation :
+    S extends undefined ? never :
+    S extends { include: any } & (ServerAvaliationArgs | ServerAvaliationFindManyArgs)
+    ? ServerAvaliation  & {
+    [P in TruthyKeys<S['include']>]:
+        P extends 'server' ? ServerGetPayload<S['include'][P]> | null :
+        P extends 'user' ? UserGetPayload<S['include'][P]> | null :  never
+  } 
+    : S extends { select: any } & (ServerAvaliationArgs | ServerAvaliationFindManyArgs)
+      ? {
+    [P in TruthyKeys<S['select']>]:
+        P extends 'server' ? ServerGetPayload<S['select'][P]> | null :
+        P extends 'user' ? UserGetPayload<S['select'][P]> | null :  P extends keyof ServerAvaliation ? ServerAvaliation[P] : never
+  } 
+      : ServerAvaliation
+
+
+  type ServerAvaliationCountArgs = 
+    Omit<ServerAvaliationFindManyArgs, 'select' | 'include'> & {
+      select?: ServerAvaliationCountAggregateInputType | true
+    }
+
+  export interface ServerAvaliationDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
+
+    /**
+     * Find zero or one ServerAvaliation that matches the filter.
+     * @param {ServerAvaliationFindUniqueArgs} args - Arguments to find a ServerAvaliation
+     * @example
+     * // Get one ServerAvaliation
+     * const serverAvaliation = await prisma.serverAvaliation.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends ServerAvaliationFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, ServerAvaliationFindUniqueArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'ServerAvaliation'> extends True ? Prisma__ServerAvaliationClient<ServerAvaliationGetPayload<T>> : Prisma__ServerAvaliationClient<ServerAvaliationGetPayload<T> | null, null>
+
+    /**
+     * Find one ServerAvaliation that matches the filter or throw an error  with `error.code='P2025'` 
+     *     if no matches were found.
+     * @param {ServerAvaliationFindUniqueOrThrowArgs} args - Arguments to find a ServerAvaliation
+     * @example
+     * // Get one ServerAvaliation
+     * const serverAvaliation = await prisma.serverAvaliation.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends ServerAvaliationFindUniqueOrThrowArgs>(
+      args?: SelectSubset<T, ServerAvaliationFindUniqueOrThrowArgs>
+    ): Prisma__ServerAvaliationClient<ServerAvaliationGetPayload<T>>
+
+    /**
+     * Find the first ServerAvaliation that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServerAvaliationFindFirstArgs} args - Arguments to find a ServerAvaliation
+     * @example
+     * // Get one ServerAvaliation
+     * const serverAvaliation = await prisma.serverAvaliation.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends ServerAvaliationFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, ServerAvaliationFindFirstArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'ServerAvaliation'> extends True ? Prisma__ServerAvaliationClient<ServerAvaliationGetPayload<T>> : Prisma__ServerAvaliationClient<ServerAvaliationGetPayload<T> | null, null>
+
+    /**
+     * Find the first ServerAvaliation that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServerAvaliationFindFirstOrThrowArgs} args - Arguments to find a ServerAvaliation
+     * @example
+     * // Get one ServerAvaliation
+     * const serverAvaliation = await prisma.serverAvaliation.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends ServerAvaliationFindFirstOrThrowArgs>(
+      args?: SelectSubset<T, ServerAvaliationFindFirstOrThrowArgs>
+    ): Prisma__ServerAvaliationClient<ServerAvaliationGetPayload<T>>
+
+    /**
+     * Find zero or more ServerAvaliations that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServerAvaliationFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ServerAvaliations
+     * const serverAvaliations = await prisma.serverAvaliation.findMany()
+     * 
+     * // Get first 10 ServerAvaliations
+     * const serverAvaliations = await prisma.serverAvaliation.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const serverAvaliationWithIdOnly = await prisma.serverAvaliation.findMany({ select: { id: true } })
+     * 
+    **/
+    findMany<T extends ServerAvaliationFindManyArgs>(
+      args?: SelectSubset<T, ServerAvaliationFindManyArgs>
+    ): Prisma.PrismaPromise<Array<ServerAvaliationGetPayload<T>>>
+
+    /**
+     * Create a ServerAvaliation.
+     * @param {ServerAvaliationCreateArgs} args - Arguments to create a ServerAvaliation.
+     * @example
+     * // Create one ServerAvaliation
+     * const ServerAvaliation = await prisma.serverAvaliation.create({
+     *   data: {
+     *     // ... data to create a ServerAvaliation
+     *   }
+     * })
+     * 
+    **/
+    create<T extends ServerAvaliationCreateArgs>(
+      args: SelectSubset<T, ServerAvaliationCreateArgs>
+    ): Prisma__ServerAvaliationClient<ServerAvaliationGetPayload<T>>
+
+    /**
+     * Create many ServerAvaliations.
+     *     @param {ServerAvaliationCreateManyArgs} args - Arguments to create many ServerAvaliations.
+     *     @example
+     *     // Create many ServerAvaliations
+     *     const serverAvaliation = await prisma.serverAvaliation.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends ServerAvaliationCreateManyArgs>(
+      args?: SelectSubset<T, ServerAvaliationCreateManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a ServerAvaliation.
+     * @param {ServerAvaliationDeleteArgs} args - Arguments to delete one ServerAvaliation.
+     * @example
+     * // Delete one ServerAvaliation
+     * const ServerAvaliation = await prisma.serverAvaliation.delete({
+     *   where: {
+     *     // ... filter to delete one ServerAvaliation
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends ServerAvaliationDeleteArgs>(
+      args: SelectSubset<T, ServerAvaliationDeleteArgs>
+    ): Prisma__ServerAvaliationClient<ServerAvaliationGetPayload<T>>
+
+    /**
+     * Update one ServerAvaliation.
+     * @param {ServerAvaliationUpdateArgs} args - Arguments to update one ServerAvaliation.
+     * @example
+     * // Update one ServerAvaliation
+     * const serverAvaliation = await prisma.serverAvaliation.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends ServerAvaliationUpdateArgs>(
+      args: SelectSubset<T, ServerAvaliationUpdateArgs>
+    ): Prisma__ServerAvaliationClient<ServerAvaliationGetPayload<T>>
+
+    /**
+     * Delete zero or more ServerAvaliations.
+     * @param {ServerAvaliationDeleteManyArgs} args - Arguments to filter ServerAvaliations to delete.
+     * @example
+     * // Delete a few ServerAvaliations
+     * const { count } = await prisma.serverAvaliation.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends ServerAvaliationDeleteManyArgs>(
+      args?: SelectSubset<T, ServerAvaliationDeleteManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ServerAvaliations.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServerAvaliationUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ServerAvaliations
+     * const serverAvaliation = await prisma.serverAvaliation.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends ServerAvaliationUpdateManyArgs>(
+      args: SelectSubset<T, ServerAvaliationUpdateManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one ServerAvaliation.
+     * @param {ServerAvaliationUpsertArgs} args - Arguments to update or create a ServerAvaliation.
+     * @example
+     * // Update or create a ServerAvaliation
+     * const serverAvaliation = await prisma.serverAvaliation.upsert({
+     *   create: {
+     *     // ... data to create a ServerAvaliation
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ServerAvaliation we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends ServerAvaliationUpsertArgs>(
+      args: SelectSubset<T, ServerAvaliationUpsertArgs>
+    ): Prisma__ServerAvaliationClient<ServerAvaliationGetPayload<T>>
+
+    /**
+     * Count the number of ServerAvaliations.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServerAvaliationCountArgs} args - Arguments to filter ServerAvaliations to count.
+     * @example
+     * // Count the number of ServerAvaliations
+     * const count = await prisma.serverAvaliation.count({
+     *   where: {
+     *     // ... the filter for the ServerAvaliations we want to count
+     *   }
+     * })
+    **/
+    count<T extends ServerAvaliationCountArgs>(
+      args?: Subset<T, ServerAvaliationCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends _Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ServerAvaliationCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ServerAvaliation.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServerAvaliationAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ServerAvaliationAggregateArgs>(args: Subset<T, ServerAvaliationAggregateArgs>): Prisma.PrismaPromise<GetServerAvaliationAggregateType<T>>
+
+    /**
+     * Group by ServerAvaliation.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServerAvaliationGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ServerAvaliationGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ServerAvaliationGroupByArgs['orderBy'] }
+        : { orderBy?: ServerAvaliationGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends TupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ServerAvaliationGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetServerAvaliationGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ServerAvaliation.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__ServerAvaliationClient<T, Null = never> implements Prisma.PrismaPromise<T> {
+    private readonly _dmmf;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    readonly [Symbol.toStringTag]: 'PrismaPromise';
+    constructor(_dmmf: runtime.DMMFClass, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+
+    server<T extends ServerArgs= {}>(args?: Subset<T, ServerArgs>): Prisma__ServerClient<ServerGetPayload<T> | Null>;
+
+    user<T extends UserArgs= {}>(args?: Subset<T, UserArgs>): Prisma__UserClient<UserGetPayload<T> | Null>;
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+
+
+  // Custom InputTypes
+
+  /**
+   * ServerAvaliation base type for findUnique actions
+   */
+  export type ServerAvaliationFindUniqueArgsBase = {
+    /**
+     * Select specific fields to fetch from the ServerAvaliation
+     */
+    select?: ServerAvaliationSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ServerAvaliationInclude | null
+    /**
+     * Filter, which ServerAvaliation to fetch.
+     */
+    where: ServerAvaliationWhereUniqueInput
+  }
+
+  /**
+   * ServerAvaliation findUnique
+   */
+  export interface ServerAvaliationFindUniqueArgs extends ServerAvaliationFindUniqueArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * ServerAvaliation findUniqueOrThrow
+   */
+  export type ServerAvaliationFindUniqueOrThrowArgs = {
+    /**
+     * Select specific fields to fetch from the ServerAvaliation
+     */
+    select?: ServerAvaliationSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ServerAvaliationInclude | null
+    /**
+     * Filter, which ServerAvaliation to fetch.
+     */
+    where: ServerAvaliationWhereUniqueInput
+  }
+
+
+  /**
+   * ServerAvaliation base type for findFirst actions
+   */
+  export type ServerAvaliationFindFirstArgsBase = {
+    /**
+     * Select specific fields to fetch from the ServerAvaliation
+     */
+    select?: ServerAvaliationSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ServerAvaliationInclude | null
+    /**
+     * Filter, which ServerAvaliation to fetch.
+     */
+    where?: ServerAvaliationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ServerAvaliations to fetch.
+     */
+    orderBy?: Enumerable<ServerAvaliationOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ServerAvaliations.
+     */
+    cursor?: ServerAvaliationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ServerAvaliations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ServerAvaliations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ServerAvaliations.
+     */
+    distinct?: Enumerable<ServerAvaliationScalarFieldEnum>
+  }
+
+  /**
+   * ServerAvaliation findFirst
+   */
+  export interface ServerAvaliationFindFirstArgs extends ServerAvaliationFindFirstArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * ServerAvaliation findFirstOrThrow
+   */
+  export type ServerAvaliationFindFirstOrThrowArgs = {
+    /**
+     * Select specific fields to fetch from the ServerAvaliation
+     */
+    select?: ServerAvaliationSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ServerAvaliationInclude | null
+    /**
+     * Filter, which ServerAvaliation to fetch.
+     */
+    where?: ServerAvaliationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ServerAvaliations to fetch.
+     */
+    orderBy?: Enumerable<ServerAvaliationOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ServerAvaliations.
+     */
+    cursor?: ServerAvaliationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ServerAvaliations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ServerAvaliations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ServerAvaliations.
+     */
+    distinct?: Enumerable<ServerAvaliationScalarFieldEnum>
+  }
+
+
+  /**
+   * ServerAvaliation findMany
+   */
+  export type ServerAvaliationFindManyArgs = {
+    /**
+     * Select specific fields to fetch from the ServerAvaliation
+     */
+    select?: ServerAvaliationSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ServerAvaliationInclude | null
+    /**
+     * Filter, which ServerAvaliations to fetch.
+     */
+    where?: ServerAvaliationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ServerAvaliations to fetch.
+     */
+    orderBy?: Enumerable<ServerAvaliationOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ServerAvaliations.
+     */
+    cursor?: ServerAvaliationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ServerAvaliations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ServerAvaliations.
+     */
+    skip?: number
+    distinct?: Enumerable<ServerAvaliationScalarFieldEnum>
+  }
+
+
+  /**
+   * ServerAvaliation create
+   */
+  export type ServerAvaliationCreateArgs = {
+    /**
+     * Select specific fields to fetch from the ServerAvaliation
+     */
+    select?: ServerAvaliationSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ServerAvaliationInclude | null
+    /**
+     * The data needed to create a ServerAvaliation.
+     */
+    data: XOR<ServerAvaliationCreateInput, ServerAvaliationUncheckedCreateInput>
+  }
+
+
+  /**
+   * ServerAvaliation createMany
+   */
+  export type ServerAvaliationCreateManyArgs = {
+    /**
+     * The data used to create many ServerAvaliations.
+     */
+    data: Enumerable<ServerAvaliationCreateManyInput>
+    skipDuplicates?: boolean
+  }
+
+
+  /**
+   * ServerAvaliation update
+   */
+  export type ServerAvaliationUpdateArgs = {
+    /**
+     * Select specific fields to fetch from the ServerAvaliation
+     */
+    select?: ServerAvaliationSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ServerAvaliationInclude | null
+    /**
+     * The data needed to update a ServerAvaliation.
+     */
+    data: XOR<ServerAvaliationUpdateInput, ServerAvaliationUncheckedUpdateInput>
+    /**
+     * Choose, which ServerAvaliation to update.
+     */
+    where: ServerAvaliationWhereUniqueInput
+  }
+
+
+  /**
+   * ServerAvaliation updateMany
+   */
+  export type ServerAvaliationUpdateManyArgs = {
+    /**
+     * The data used to update ServerAvaliations.
+     */
+    data: XOR<ServerAvaliationUpdateManyMutationInput, ServerAvaliationUncheckedUpdateManyInput>
+    /**
+     * Filter which ServerAvaliations to update
+     */
+    where?: ServerAvaliationWhereInput
+  }
+
+
+  /**
+   * ServerAvaliation upsert
+   */
+  export type ServerAvaliationUpsertArgs = {
+    /**
+     * Select specific fields to fetch from the ServerAvaliation
+     */
+    select?: ServerAvaliationSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ServerAvaliationInclude | null
+    /**
+     * The filter to search for the ServerAvaliation to update in case it exists.
+     */
+    where: ServerAvaliationWhereUniqueInput
+    /**
+     * In case the ServerAvaliation found by the `where` argument doesn't exist, create a new ServerAvaliation with this data.
+     */
+    create: XOR<ServerAvaliationCreateInput, ServerAvaliationUncheckedCreateInput>
+    /**
+     * In case the ServerAvaliation was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ServerAvaliationUpdateInput, ServerAvaliationUncheckedUpdateInput>
+  }
+
+
+  /**
+   * ServerAvaliation delete
+   */
+  export type ServerAvaliationDeleteArgs = {
+    /**
+     * Select specific fields to fetch from the ServerAvaliation
+     */
+    select?: ServerAvaliationSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ServerAvaliationInclude | null
+    /**
+     * Filter which ServerAvaliation to delete.
+     */
+    where: ServerAvaliationWhereUniqueInput
+  }
+
+
+  /**
+   * ServerAvaliation deleteMany
+   */
+  export type ServerAvaliationDeleteManyArgs = {
+    /**
+     * Filter which ServerAvaliations to delete
+     */
+    where?: ServerAvaliationWhereInput
+  }
+
+
+  /**
+   * ServerAvaliation without action
+   */
+  export type ServerAvaliationArgs = {
+    /**
+     * Select specific fields to fetch from the ServerAvaliation
+     */
+    select?: ServerAvaliationSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ServerAvaliationInclude | null
+  }
+
+
+
+  /**
    * Enums
    */
 
@@ -5762,6 +6814,17 @@ export namespace Prisma {
   };
 
   export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+  export const ServerAvaliationScalarFieldEnum: {
+    id: 'id',
+    serverId: 'serverId',
+    userId: 'userId',
+    avaliation: 'avaliation',
+    createdAt: 'createdAt'
+  };
+
+  export type ServerAvaliationScalarFieldEnum = (typeof ServerAvaliationScalarFieldEnum)[keyof typeof ServerAvaliationScalarFieldEnum]
 
 
   export const ServerScalarFieldEnum: {
@@ -5845,6 +6908,7 @@ export namespace Prisma {
     password?: StringFilter | string
     createdAt?: DateTimeFilter | Date | string
     permissions?: UserHasPermissionListRelationFilter
+    ServerAvaliation?: ServerAvaliationListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -5856,6 +6920,7 @@ export namespace Prisma {
     password?: SortOrder
     createdAt?: SortOrder
     permissions?: UserHasPermissionOrderByRelationAggregateInput
+    ServerAvaliation?: ServerAvaliationOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = {
@@ -5901,6 +6966,7 @@ export namespace Prisma {
     logo?: StringNullableFilter | string | null
     createdAt?: DateTimeFilter | Date | string
     tags?: ServerTagsListRelationFilter
+    ServerAvaliation?: ServerAvaliationListRelationFilter
   }
 
   export type ServerOrderByWithRelationInput = {
@@ -5912,6 +6978,7 @@ export namespace Prisma {
     logo?: SortOrder
     createdAt?: SortOrder
     tags?: ServerTagsOrderByRelationAggregateInput
+    ServerAvaliation?: ServerAvaliationOrderByRelationAggregateInput
   }
 
   export type ServerWhereUniqueInput = {
@@ -6072,6 +7139,57 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter | Date | string
   }
 
+  export type ServerAvaliationWhereInput = {
+    AND?: Enumerable<ServerAvaliationWhereInput>
+    OR?: Enumerable<ServerAvaliationWhereInput>
+    NOT?: Enumerable<ServerAvaliationWhereInput>
+    id?: StringFilter | string
+    serverId?: StringNullableFilter | string | null
+    userId?: StringNullableFilter | string | null
+    avaliation?: FloatFilter | number
+    createdAt?: DateTimeFilter | Date | string
+    server?: XOR<ServerRelationFilter, ServerWhereInput> | null
+    user?: XOR<UserRelationFilter, UserWhereInput> | null
+  }
+
+  export type ServerAvaliationOrderByWithRelationInput = {
+    id?: SortOrder
+    serverId?: SortOrder
+    userId?: SortOrder
+    avaliation?: SortOrder
+    createdAt?: SortOrder
+    server?: ServerOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type ServerAvaliationWhereUniqueInput = {
+    id?: string
+  }
+
+  export type ServerAvaliationOrderByWithAggregationInput = {
+    id?: SortOrder
+    serverId?: SortOrder
+    userId?: SortOrder
+    avaliation?: SortOrder
+    createdAt?: SortOrder
+    _count?: ServerAvaliationCountOrderByAggregateInput
+    _avg?: ServerAvaliationAvgOrderByAggregateInput
+    _max?: ServerAvaliationMaxOrderByAggregateInput
+    _min?: ServerAvaliationMinOrderByAggregateInput
+    _sum?: ServerAvaliationSumOrderByAggregateInput
+  }
+
+  export type ServerAvaliationScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<ServerAvaliationScalarWhereWithAggregatesInput>
+    OR?: Enumerable<ServerAvaliationScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<ServerAvaliationScalarWhereWithAggregatesInput>
+    id?: StringWithAggregatesFilter | string
+    serverId?: StringNullableWithAggregatesFilter | string | null
+    userId?: StringNullableWithAggregatesFilter | string | null
+    avaliation?: FloatWithAggregatesFilter | number
+    createdAt?: DateTimeWithAggregatesFilter | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string | null
     email: string
@@ -6081,6 +7199,7 @@ export namespace Prisma {
     password: string
     createdAt?: Date | string
     permissions?: UserHasPermissionCreateNestedManyWithoutUserInput
+    ServerAvaliation?: ServerAvaliationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -6092,6 +7211,7 @@ export namespace Prisma {
     password: string
     createdAt?: Date | string
     permissions?: UserHasPermissionUncheckedCreateNestedManyWithoutUserInput
+    ServerAvaliation?: ServerAvaliationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -6103,6 +7223,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     permissions?: UserHasPermissionUpdateManyWithoutUserNestedInput
+    ServerAvaliation?: ServerAvaliationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -6114,6 +7235,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     permissions?: UserHasPermissionUncheckedUpdateManyWithoutUserNestedInput
+    ServerAvaliation?: ServerAvaliationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -6155,6 +7277,7 @@ export namespace Prisma {
     logo?: string | null
     createdAt?: Date | string
     tags?: ServerTagsCreateNestedManyWithoutServerInput
+    ServerAvaliation?: ServerAvaliationCreateNestedManyWithoutServerInput
   }
 
   export type ServerUncheckedCreateInput = {
@@ -6166,6 +7289,7 @@ export namespace Prisma {
     logo?: string | null
     createdAt?: Date | string
     tags?: ServerTagsUncheckedCreateNestedManyWithoutServerInput
+    ServerAvaliation?: ServerAvaliationUncheckedCreateNestedManyWithoutServerInput
   }
 
   export type ServerUpdateInput = {
@@ -6177,6 +7301,7 @@ export namespace Prisma {
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tags?: ServerTagsUpdateManyWithoutServerNestedInput
+    ServerAvaliation?: ServerAvaliationUpdateManyWithoutServerNestedInput
   }
 
   export type ServerUncheckedUpdateInput = {
@@ -6188,6 +7313,7 @@ export namespace Prisma {
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tags?: ServerTagsUncheckedUpdateManyWithoutServerNestedInput
+    ServerAvaliation?: ServerAvaliationUncheckedUpdateManyWithoutServerNestedInput
   }
 
   export type ServerCreateManyInput = {
@@ -6361,6 +7487,60 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ServerAvaliationCreateInput = {
+    id?: string
+    avaliation: number
+    createdAt?: Date | string
+    server?: ServerCreateNestedOneWithoutServerAvaliationInput
+    user?: UserCreateNestedOneWithoutServerAvaliationInput
+  }
+
+  export type ServerAvaliationUncheckedCreateInput = {
+    id?: string
+    serverId?: string | null
+    userId?: string | null
+    avaliation: number
+    createdAt?: Date | string
+  }
+
+  export type ServerAvaliationUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    avaliation?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    server?: ServerUpdateOneWithoutServerAvaliationNestedInput
+    user?: UserUpdateOneWithoutServerAvaliationNestedInput
+  }
+
+  export type ServerAvaliationUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    serverId?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    avaliation?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ServerAvaliationCreateManyInput = {
+    id?: string
+    serverId?: string | null
+    userId?: string | null
+    avaliation: number
+    createdAt?: Date | string
+  }
+
+  export type ServerAvaliationUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    avaliation?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ServerAvaliationUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    serverId?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    avaliation?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringNullableFilter = {
     equals?: string | null
     in?: Enumerable<string> | null
@@ -6408,7 +7588,17 @@ export namespace Prisma {
     none?: UserHasPermissionWhereInput
   }
 
+  export type ServerAvaliationListRelationFilter = {
+    every?: ServerAvaliationWhereInput
+    some?: ServerAvaliationWhereInput
+    none?: ServerAvaliationWhereInput
+  }
+
   export type UserHasPermissionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ServerAvaliationOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -6607,6 +7797,65 @@ export namespace Prisma {
     createdAt?: SortOrder
   }
 
+  export type FloatFilter = {
+    equals?: number
+    in?: Enumerable<number>
+    notIn?: Enumerable<number>
+    lt?: number
+    lte?: number
+    gt?: number
+    gte?: number
+    not?: NestedFloatFilter | number
+  }
+
+  export type ServerAvaliationCountOrderByAggregateInput = {
+    id?: SortOrder
+    serverId?: SortOrder
+    userId?: SortOrder
+    avaliation?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ServerAvaliationAvgOrderByAggregateInput = {
+    avaliation?: SortOrder
+  }
+
+  export type ServerAvaliationMaxOrderByAggregateInput = {
+    id?: SortOrder
+    serverId?: SortOrder
+    userId?: SortOrder
+    avaliation?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ServerAvaliationMinOrderByAggregateInput = {
+    id?: SortOrder
+    serverId?: SortOrder
+    userId?: SortOrder
+    avaliation?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ServerAvaliationSumOrderByAggregateInput = {
+    avaliation?: SortOrder
+  }
+
+  export type FloatWithAggregatesFilter = {
+    equals?: number
+    in?: Enumerable<number>
+    notIn?: Enumerable<number>
+    lt?: number
+    lte?: number
+    gt?: number
+    gte?: number
+    not?: NestedFloatWithAggregatesFilter | number
+    _count?: NestedIntFilter
+    _avg?: NestedFloatFilter
+    _sum?: NestedFloatFilter
+    _min?: NestedFloatFilter
+    _max?: NestedFloatFilter
+  }
+
   export type UserHasPermissionCreateNestedManyWithoutUserInput = {
     create?: XOR<Enumerable<UserHasPermissionCreateWithoutUserInput>, Enumerable<UserHasPermissionUncheckedCreateWithoutUserInput>>
     connectOrCreate?: Enumerable<UserHasPermissionCreateOrConnectWithoutUserInput>
@@ -6614,11 +7863,25 @@ export namespace Prisma {
     connect?: Enumerable<UserHasPermissionWhereUniqueInput>
   }
 
+  export type ServerAvaliationCreateNestedManyWithoutUserInput = {
+    create?: XOR<Enumerable<ServerAvaliationCreateWithoutUserInput>, Enumerable<ServerAvaliationUncheckedCreateWithoutUserInput>>
+    connectOrCreate?: Enumerable<ServerAvaliationCreateOrConnectWithoutUserInput>
+    createMany?: ServerAvaliationCreateManyUserInputEnvelope
+    connect?: Enumerable<ServerAvaliationWhereUniqueInput>
+  }
+
   export type UserHasPermissionUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<Enumerable<UserHasPermissionCreateWithoutUserInput>, Enumerable<UserHasPermissionUncheckedCreateWithoutUserInput>>
     connectOrCreate?: Enumerable<UserHasPermissionCreateOrConnectWithoutUserInput>
     createMany?: UserHasPermissionCreateManyUserInputEnvelope
     connect?: Enumerable<UserHasPermissionWhereUniqueInput>
+  }
+
+  export type ServerAvaliationUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<Enumerable<ServerAvaliationCreateWithoutUserInput>, Enumerable<ServerAvaliationUncheckedCreateWithoutUserInput>>
+    connectOrCreate?: Enumerable<ServerAvaliationCreateOrConnectWithoutUserInput>
+    createMany?: ServerAvaliationCreateManyUserInputEnvelope
+    connect?: Enumerable<ServerAvaliationWhereUniqueInput>
   }
 
   export type NullableStringFieldUpdateOperationsInput = {
@@ -6647,6 +7910,20 @@ export namespace Prisma {
     deleteMany?: Enumerable<UserHasPermissionScalarWhereInput>
   }
 
+  export type ServerAvaliationUpdateManyWithoutUserNestedInput = {
+    create?: XOR<Enumerable<ServerAvaliationCreateWithoutUserInput>, Enumerable<ServerAvaliationUncheckedCreateWithoutUserInput>>
+    connectOrCreate?: Enumerable<ServerAvaliationCreateOrConnectWithoutUserInput>
+    upsert?: Enumerable<ServerAvaliationUpsertWithWhereUniqueWithoutUserInput>
+    createMany?: ServerAvaliationCreateManyUserInputEnvelope
+    set?: Enumerable<ServerAvaliationWhereUniqueInput>
+    disconnect?: Enumerable<ServerAvaliationWhereUniqueInput>
+    delete?: Enumerable<ServerAvaliationWhereUniqueInput>
+    connect?: Enumerable<ServerAvaliationWhereUniqueInput>
+    update?: Enumerable<ServerAvaliationUpdateWithWhereUniqueWithoutUserInput>
+    updateMany?: Enumerable<ServerAvaliationUpdateManyWithWhereWithoutUserInput>
+    deleteMany?: Enumerable<ServerAvaliationScalarWhereInput>
+  }
+
   export type UserHasPermissionUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<Enumerable<UserHasPermissionCreateWithoutUserInput>, Enumerable<UserHasPermissionUncheckedCreateWithoutUserInput>>
     connectOrCreate?: Enumerable<UserHasPermissionCreateOrConnectWithoutUserInput>
@@ -6661,6 +7938,20 @@ export namespace Prisma {
     deleteMany?: Enumerable<UserHasPermissionScalarWhereInput>
   }
 
+  export type ServerAvaliationUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<Enumerable<ServerAvaliationCreateWithoutUserInput>, Enumerable<ServerAvaliationUncheckedCreateWithoutUserInput>>
+    connectOrCreate?: Enumerable<ServerAvaliationCreateOrConnectWithoutUserInput>
+    upsert?: Enumerable<ServerAvaliationUpsertWithWhereUniqueWithoutUserInput>
+    createMany?: ServerAvaliationCreateManyUserInputEnvelope
+    set?: Enumerable<ServerAvaliationWhereUniqueInput>
+    disconnect?: Enumerable<ServerAvaliationWhereUniqueInput>
+    delete?: Enumerable<ServerAvaliationWhereUniqueInput>
+    connect?: Enumerable<ServerAvaliationWhereUniqueInput>
+    update?: Enumerable<ServerAvaliationUpdateWithWhereUniqueWithoutUserInput>
+    updateMany?: Enumerable<ServerAvaliationUpdateManyWithWhereWithoutUserInput>
+    deleteMany?: Enumerable<ServerAvaliationScalarWhereInput>
+  }
+
   export type ServerTagsCreateNestedManyWithoutServerInput = {
     create?: XOR<Enumerable<ServerTagsCreateWithoutServerInput>, Enumerable<ServerTagsUncheckedCreateWithoutServerInput>>
     connectOrCreate?: Enumerable<ServerTagsCreateOrConnectWithoutServerInput>
@@ -6668,11 +7959,25 @@ export namespace Prisma {
     connect?: Enumerable<ServerTagsWhereUniqueInput>
   }
 
+  export type ServerAvaliationCreateNestedManyWithoutServerInput = {
+    create?: XOR<Enumerable<ServerAvaliationCreateWithoutServerInput>, Enumerable<ServerAvaliationUncheckedCreateWithoutServerInput>>
+    connectOrCreate?: Enumerable<ServerAvaliationCreateOrConnectWithoutServerInput>
+    createMany?: ServerAvaliationCreateManyServerInputEnvelope
+    connect?: Enumerable<ServerAvaliationWhereUniqueInput>
+  }
+
   export type ServerTagsUncheckedCreateNestedManyWithoutServerInput = {
     create?: XOR<Enumerable<ServerTagsCreateWithoutServerInput>, Enumerable<ServerTagsUncheckedCreateWithoutServerInput>>
     connectOrCreate?: Enumerable<ServerTagsCreateOrConnectWithoutServerInput>
     createMany?: ServerTagsCreateManyServerInputEnvelope
     connect?: Enumerable<ServerTagsWhereUniqueInput>
+  }
+
+  export type ServerAvaliationUncheckedCreateNestedManyWithoutServerInput = {
+    create?: XOR<Enumerable<ServerAvaliationCreateWithoutServerInput>, Enumerable<ServerAvaliationUncheckedCreateWithoutServerInput>>
+    connectOrCreate?: Enumerable<ServerAvaliationCreateOrConnectWithoutServerInput>
+    createMany?: ServerAvaliationCreateManyServerInputEnvelope
+    connect?: Enumerable<ServerAvaliationWhereUniqueInput>
   }
 
   export type ServerTagsUpdateManyWithoutServerNestedInput = {
@@ -6689,6 +7994,20 @@ export namespace Prisma {
     deleteMany?: Enumerable<ServerTagsScalarWhereInput>
   }
 
+  export type ServerAvaliationUpdateManyWithoutServerNestedInput = {
+    create?: XOR<Enumerable<ServerAvaliationCreateWithoutServerInput>, Enumerable<ServerAvaliationUncheckedCreateWithoutServerInput>>
+    connectOrCreate?: Enumerable<ServerAvaliationCreateOrConnectWithoutServerInput>
+    upsert?: Enumerable<ServerAvaliationUpsertWithWhereUniqueWithoutServerInput>
+    createMany?: ServerAvaliationCreateManyServerInputEnvelope
+    set?: Enumerable<ServerAvaliationWhereUniqueInput>
+    disconnect?: Enumerable<ServerAvaliationWhereUniqueInput>
+    delete?: Enumerable<ServerAvaliationWhereUniqueInput>
+    connect?: Enumerable<ServerAvaliationWhereUniqueInput>
+    update?: Enumerable<ServerAvaliationUpdateWithWhereUniqueWithoutServerInput>
+    updateMany?: Enumerable<ServerAvaliationUpdateManyWithWhereWithoutServerInput>
+    deleteMany?: Enumerable<ServerAvaliationScalarWhereInput>
+  }
+
   export type ServerTagsUncheckedUpdateManyWithoutServerNestedInput = {
     create?: XOR<Enumerable<ServerTagsCreateWithoutServerInput>, Enumerable<ServerTagsUncheckedCreateWithoutServerInput>>
     connectOrCreate?: Enumerable<ServerTagsCreateOrConnectWithoutServerInput>
@@ -6701,6 +8020,20 @@ export namespace Prisma {
     update?: Enumerable<ServerTagsUpdateWithWhereUniqueWithoutServerInput>
     updateMany?: Enumerable<ServerTagsUpdateManyWithWhereWithoutServerInput>
     deleteMany?: Enumerable<ServerTagsScalarWhereInput>
+  }
+
+  export type ServerAvaliationUncheckedUpdateManyWithoutServerNestedInput = {
+    create?: XOR<Enumerable<ServerAvaliationCreateWithoutServerInput>, Enumerable<ServerAvaliationUncheckedCreateWithoutServerInput>>
+    connectOrCreate?: Enumerable<ServerAvaliationCreateOrConnectWithoutServerInput>
+    upsert?: Enumerable<ServerAvaliationUpsertWithWhereUniqueWithoutServerInput>
+    createMany?: ServerAvaliationCreateManyServerInputEnvelope
+    set?: Enumerable<ServerAvaliationWhereUniqueInput>
+    disconnect?: Enumerable<ServerAvaliationWhereUniqueInput>
+    delete?: Enumerable<ServerAvaliationWhereUniqueInput>
+    connect?: Enumerable<ServerAvaliationWhereUniqueInput>
+    update?: Enumerable<ServerAvaliationUpdateWithWhereUniqueWithoutServerInput>
+    updateMany?: Enumerable<ServerAvaliationUpdateManyWithWhereWithoutServerInput>
+    deleteMany?: Enumerable<ServerAvaliationScalarWhereInput>
   }
 
   export type ServerCreateNestedOneWithoutTagsInput = {
@@ -6791,6 +8124,46 @@ export namespace Prisma {
     delete?: boolean
     connect?: PermissionWhereUniqueInput
     update?: XOR<PermissionUpdateWithoutPermissionInput, PermissionUncheckedUpdateWithoutPermissionInput>
+  }
+
+  export type ServerCreateNestedOneWithoutServerAvaliationInput = {
+    create?: XOR<ServerCreateWithoutServerAvaliationInput, ServerUncheckedCreateWithoutServerAvaliationInput>
+    connectOrCreate?: ServerCreateOrConnectWithoutServerAvaliationInput
+    connect?: ServerWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutServerAvaliationInput = {
+    create?: XOR<UserCreateWithoutServerAvaliationInput, UserUncheckedCreateWithoutServerAvaliationInput>
+    connectOrCreate?: UserCreateOrConnectWithoutServerAvaliationInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type FloatFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type ServerUpdateOneWithoutServerAvaliationNestedInput = {
+    create?: XOR<ServerCreateWithoutServerAvaliationInput, ServerUncheckedCreateWithoutServerAvaliationInput>
+    connectOrCreate?: ServerCreateOrConnectWithoutServerAvaliationInput
+    upsert?: ServerUpsertWithoutServerAvaliationInput
+    disconnect?: boolean
+    delete?: boolean
+    connect?: ServerWhereUniqueInput
+    update?: XOR<ServerUpdateWithoutServerAvaliationInput, ServerUncheckedUpdateWithoutServerAvaliationInput>
+  }
+
+  export type UserUpdateOneWithoutServerAvaliationNestedInput = {
+    create?: XOR<UserCreateWithoutServerAvaliationInput, UserUncheckedCreateWithoutServerAvaliationInput>
+    connectOrCreate?: UserCreateOrConnectWithoutServerAvaliationInput
+    upsert?: UserUpsertWithoutServerAvaliationInput
+    disconnect?: boolean
+    delete?: boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<UserUpdateWithoutServerAvaliationInput, UserUncheckedUpdateWithoutServerAvaliationInput>
   }
 
   export type NestedStringNullableFilter = {
@@ -6902,6 +8275,33 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter
   }
 
+  export type NestedFloatFilter = {
+    equals?: number
+    in?: Enumerable<number>
+    notIn?: Enumerable<number>
+    lt?: number
+    lte?: number
+    gt?: number
+    gte?: number
+    not?: NestedFloatFilter | number
+  }
+
+  export type NestedFloatWithAggregatesFilter = {
+    equals?: number
+    in?: Enumerable<number>
+    notIn?: Enumerable<number>
+    lt?: number
+    lte?: number
+    gt?: number
+    gte?: number
+    not?: NestedFloatWithAggregatesFilter | number
+    _count?: NestedIntFilter
+    _avg?: NestedFloatFilter
+    _sum?: NestedFloatFilter
+    _min?: NestedFloatFilter
+    _max?: NestedFloatFilter
+  }
+
   export type UserHasPermissionCreateWithoutUserInput = {
     id?: string
     createdAt?: Date | string
@@ -6921,6 +8321,30 @@ export namespace Prisma {
 
   export type UserHasPermissionCreateManyUserInputEnvelope = {
     data: Enumerable<UserHasPermissionCreateManyUserInput>
+    skipDuplicates?: boolean
+  }
+
+  export type ServerAvaliationCreateWithoutUserInput = {
+    id?: string
+    avaliation: number
+    createdAt?: Date | string
+    server?: ServerCreateNestedOneWithoutServerAvaliationInput
+  }
+
+  export type ServerAvaliationUncheckedCreateWithoutUserInput = {
+    id?: string
+    serverId?: string | null
+    avaliation: number
+    createdAt?: Date | string
+  }
+
+  export type ServerAvaliationCreateOrConnectWithoutUserInput = {
+    where: ServerAvaliationWhereUniqueInput
+    create: XOR<ServerAvaliationCreateWithoutUserInput, ServerAvaliationUncheckedCreateWithoutUserInput>
+  }
+
+  export type ServerAvaliationCreateManyUserInputEnvelope = {
+    data: Enumerable<ServerAvaliationCreateManyUserInput>
     skipDuplicates?: boolean
   }
 
@@ -6950,6 +8374,33 @@ export namespace Prisma {
     createdAt?: DateTimeFilter | Date | string
   }
 
+  export type ServerAvaliationUpsertWithWhereUniqueWithoutUserInput = {
+    where: ServerAvaliationWhereUniqueInput
+    update: XOR<ServerAvaliationUpdateWithoutUserInput, ServerAvaliationUncheckedUpdateWithoutUserInput>
+    create: XOR<ServerAvaliationCreateWithoutUserInput, ServerAvaliationUncheckedCreateWithoutUserInput>
+  }
+
+  export type ServerAvaliationUpdateWithWhereUniqueWithoutUserInput = {
+    where: ServerAvaliationWhereUniqueInput
+    data: XOR<ServerAvaliationUpdateWithoutUserInput, ServerAvaliationUncheckedUpdateWithoutUserInput>
+  }
+
+  export type ServerAvaliationUpdateManyWithWhereWithoutUserInput = {
+    where: ServerAvaliationScalarWhereInput
+    data: XOR<ServerAvaliationUpdateManyMutationInput, ServerAvaliationUncheckedUpdateManyWithoutServerAvaliationInput>
+  }
+
+  export type ServerAvaliationScalarWhereInput = {
+    AND?: Enumerable<ServerAvaliationScalarWhereInput>
+    OR?: Enumerable<ServerAvaliationScalarWhereInput>
+    NOT?: Enumerable<ServerAvaliationScalarWhereInput>
+    id?: StringFilter | string
+    serverId?: StringNullableFilter | string | null
+    userId?: StringNullableFilter | string | null
+    avaliation?: FloatFilter | number
+    createdAt?: DateTimeFilter | Date | string
+  }
+
   export type ServerTagsCreateWithoutServerInput = {
     id?: string
     name: string
@@ -6969,6 +8420,30 @@ export namespace Prisma {
 
   export type ServerTagsCreateManyServerInputEnvelope = {
     data: Enumerable<ServerTagsCreateManyServerInput>
+    skipDuplicates?: boolean
+  }
+
+  export type ServerAvaliationCreateWithoutServerInput = {
+    id?: string
+    avaliation: number
+    createdAt?: Date | string
+    user?: UserCreateNestedOneWithoutServerAvaliationInput
+  }
+
+  export type ServerAvaliationUncheckedCreateWithoutServerInput = {
+    id?: string
+    userId?: string | null
+    avaliation: number
+    createdAt?: Date | string
+  }
+
+  export type ServerAvaliationCreateOrConnectWithoutServerInput = {
+    where: ServerAvaliationWhereUniqueInput
+    create: XOR<ServerAvaliationCreateWithoutServerInput, ServerAvaliationUncheckedCreateWithoutServerInput>
+  }
+
+  export type ServerAvaliationCreateManyServerInputEnvelope = {
+    data: Enumerable<ServerAvaliationCreateManyServerInput>
     skipDuplicates?: boolean
   }
 
@@ -6998,6 +8473,22 @@ export namespace Prisma {
     createdAt?: DateTimeFilter | Date | string
   }
 
+  export type ServerAvaliationUpsertWithWhereUniqueWithoutServerInput = {
+    where: ServerAvaliationWhereUniqueInput
+    update: XOR<ServerAvaliationUpdateWithoutServerInput, ServerAvaliationUncheckedUpdateWithoutServerInput>
+    create: XOR<ServerAvaliationCreateWithoutServerInput, ServerAvaliationUncheckedCreateWithoutServerInput>
+  }
+
+  export type ServerAvaliationUpdateWithWhereUniqueWithoutServerInput = {
+    where: ServerAvaliationWhereUniqueInput
+    data: XOR<ServerAvaliationUpdateWithoutServerInput, ServerAvaliationUncheckedUpdateWithoutServerInput>
+  }
+
+  export type ServerAvaliationUpdateManyWithWhereWithoutServerInput = {
+    where: ServerAvaliationScalarWhereInput
+    data: XOR<ServerAvaliationUpdateManyMutationInput, ServerAvaliationUncheckedUpdateManyWithoutServerAvaliationInput>
+  }
+
   export type ServerCreateWithoutTagsInput = {
     id?: string
     name: string
@@ -7006,6 +8497,7 @@ export namespace Prisma {
     description?: string | null
     logo?: string | null
     createdAt?: Date | string
+    ServerAvaliation?: ServerAvaliationCreateNestedManyWithoutServerInput
   }
 
   export type ServerUncheckedCreateWithoutTagsInput = {
@@ -7016,6 +8508,7 @@ export namespace Prisma {
     description?: string | null
     logo?: string | null
     createdAt?: Date | string
+    ServerAvaliation?: ServerAvaliationUncheckedCreateNestedManyWithoutServerInput
   }
 
   export type ServerCreateOrConnectWithoutTagsInput = {
@@ -7036,6 +8529,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ServerAvaliation?: ServerAvaliationUpdateManyWithoutServerNestedInput
   }
 
   export type ServerUncheckedUpdateWithoutTagsInput = {
@@ -7046,6 +8540,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ServerAvaliation?: ServerAvaliationUncheckedUpdateManyWithoutServerNestedInput
   }
 
   export type UserHasPermissionCreateWithoutPermissionInput = {
@@ -7094,6 +8589,7 @@ export namespace Prisma {
     phone?: string | null
     password: string
     createdAt?: Date | string
+    ServerAvaliation?: ServerAvaliationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPermissionsInput = {
@@ -7104,6 +8600,7 @@ export namespace Prisma {
     phone?: string | null
     password: string
     createdAt?: Date | string
+    ServerAvaliation?: ServerAvaliationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPermissionsInput = {
@@ -7141,6 +8638,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     password?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ServerAvaliation?: ServerAvaliationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPermissionsInput = {
@@ -7151,6 +8649,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     password?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ServerAvaliation?: ServerAvaliationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type PermissionUpsertWithoutPermissionInput = {
@@ -7170,9 +8669,124 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ServerCreateWithoutServerAvaliationInput = {
+    id?: string
+    name: string
+    discord_channel: string
+    contact?: string | null
+    description?: string | null
+    logo?: string | null
+    createdAt?: Date | string
+    tags?: ServerTagsCreateNestedManyWithoutServerInput
+  }
+
+  export type ServerUncheckedCreateWithoutServerAvaliationInput = {
+    id?: string
+    name: string
+    discord_channel: string
+    contact?: string | null
+    description?: string | null
+    logo?: string | null
+    createdAt?: Date | string
+    tags?: ServerTagsUncheckedCreateNestedManyWithoutServerInput
+  }
+
+  export type ServerCreateOrConnectWithoutServerAvaliationInput = {
+    where: ServerWhereUniqueInput
+    create: XOR<ServerCreateWithoutServerAvaliationInput, ServerUncheckedCreateWithoutServerAvaliationInput>
+  }
+
+  export type UserCreateWithoutServerAvaliationInput = {
+    id?: string | null
+    email: string
+    name: string
+    birth: Date | string
+    phone?: string | null
+    password: string
+    createdAt?: Date | string
+    permissions?: UserHasPermissionCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutServerAvaliationInput = {
+    id?: string | null
+    email: string
+    name: string
+    birth: Date | string
+    phone?: string | null
+    password: string
+    createdAt?: Date | string
+    permissions?: UserHasPermissionUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutServerAvaliationInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutServerAvaliationInput, UserUncheckedCreateWithoutServerAvaliationInput>
+  }
+
+  export type ServerUpsertWithoutServerAvaliationInput = {
+    update: XOR<ServerUpdateWithoutServerAvaliationInput, ServerUncheckedUpdateWithoutServerAvaliationInput>
+    create: XOR<ServerCreateWithoutServerAvaliationInput, ServerUncheckedCreateWithoutServerAvaliationInput>
+  }
+
+  export type ServerUpdateWithoutServerAvaliationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    discord_channel?: StringFieldUpdateOperationsInput | string
+    contact?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tags?: ServerTagsUpdateManyWithoutServerNestedInput
+  }
+
+  export type ServerUncheckedUpdateWithoutServerAvaliationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    discord_channel?: StringFieldUpdateOperationsInput | string
+    contact?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tags?: ServerTagsUncheckedUpdateManyWithoutServerNestedInput
+  }
+
+  export type UserUpsertWithoutServerAvaliationInput = {
+    update: XOR<UserUpdateWithoutServerAvaliationInput, UserUncheckedUpdateWithoutServerAvaliationInput>
+    create: XOR<UserCreateWithoutServerAvaliationInput, UserUncheckedCreateWithoutServerAvaliationInput>
+  }
+
+  export type UserUpdateWithoutServerAvaliationInput = {
+    id?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    birth?: DateTimeFieldUpdateOperationsInput | Date | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    permissions?: UserHasPermissionUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutServerAvaliationInput = {
+    id?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    birth?: DateTimeFieldUpdateOperationsInput | Date | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    permissions?: UserHasPermissionUncheckedUpdateManyWithoutUserNestedInput
+  }
+
   export type UserHasPermissionCreateManyUserInput = {
     id?: string
     permissionId?: string | null
+    createdAt?: Date | string
+  }
+
+  export type ServerAvaliationCreateManyUserInput = {
+    id?: string
+    serverId?: string | null
+    avaliation: number
     createdAt?: Date | string
   }
 
@@ -7194,9 +8808,37 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ServerAvaliationUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    avaliation?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    server?: ServerUpdateOneWithoutServerAvaliationNestedInput
+  }
+
+  export type ServerAvaliationUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    serverId?: NullableStringFieldUpdateOperationsInput | string | null
+    avaliation?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ServerAvaliationUncheckedUpdateManyWithoutServerAvaliationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    serverId?: NullableStringFieldUpdateOperationsInput | string | null
+    avaliation?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type ServerTagsCreateManyServerInput = {
     id?: string
     name: string
+    createdAt?: Date | string
+  }
+
+  export type ServerAvaliationCreateManyServerInput = {
+    id?: string
+    userId?: string | null
+    avaliation: number
     createdAt?: Date | string
   }
 
@@ -7215,6 +8857,20 @@ export namespace Prisma {
   export type ServerTagsUncheckedUpdateManyWithoutTagsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ServerAvaliationUpdateWithoutServerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    avaliation?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneWithoutServerAvaliationNestedInput
+  }
+
+  export type ServerAvaliationUncheckedUpdateWithoutServerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    avaliation?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

@@ -32,6 +32,9 @@ const getAll = async () => {
     orderBy: {
       createdAt: "desc",
     },
+    include: {
+      ServerAvaliation: true,
+    },
   });
 
   return servers;

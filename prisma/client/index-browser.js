@@ -100,6 +100,14 @@ exports.Prisma.QueryMode = makeEnum({
   insensitive: 'insensitive'
 });
 
+exports.Prisma.ServerAvaliationScalarFieldEnum = makeEnum({
+  id: 'id',
+  serverId: 'serverId',
+  userId: 'userId',
+  avaliation: 'avaliation',
+  createdAt: 'createdAt'
+});
+
 exports.Prisma.ServerScalarFieldEnum = makeEnum({
   id: 'id',
   name: 'name',
@@ -152,7 +160,8 @@ exports.Prisma.ModelName = makeEnum({
   Server: 'Server',
   ServerTags: 'ServerTags',
   Permission: 'Permission',
-  UserHasPermission: 'UserHasPermission'
+  UserHasPermission: 'UserHasPermission',
+  ServerAvaliation: 'ServerAvaliation'
 });
 
 /**

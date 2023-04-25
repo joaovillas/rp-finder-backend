@@ -108,10 +108,18 @@ exports.Prisma.ServerAvaliationScalarFieldEnum = makeEnum({
   createdAt: 'createdAt'
 });
 
+exports.Prisma.ServerPlayersScalarFieldEnum = makeEnum({
+  id: 'id',
+  totalPlayers: 'totalPlayers',
+  serverId: 'serverId',
+  createdAt: 'createdAt'
+});
+
 exports.Prisma.ServerScalarFieldEnum = makeEnum({
   id: 'id',
   name: 'name',
   discord_channel: 'discord_channel',
+  fivem_id: 'fivem_id',
   contact: 'contact',
   description: 'description',
   logo: 'logo',
@@ -158,6 +166,7 @@ exports.Prisma.UserScalarFieldEnum = makeEnum({
 exports.Prisma.ModelName = makeEnum({
   User: 'User',
   Server: 'Server',
+  ServerPlayers: 'ServerPlayers',
   ServerTags: 'ServerTags',
   Permission: 'Permission',
   UserHasPermission: 'UserHasPermission',

@@ -32,9 +32,21 @@ export type Server = {
   id: string
   name: string
   discord_channel: string | null
+  fivem_id: string
   contact: string | null
   description: string | null
   logo: string | null
+  createdAt: Date
+}
+
+/**
+ * Model ServerPlayers
+ * 
+ */
+export type ServerPlayers = {
+  id: string
+  totalPlayers: number
+  serverId: string | null
   createdAt: Date
 }
 
@@ -219,6 +231,16 @@ export class PrismaClient<
     * ```
     */
   get server(): Prisma.ServerDelegate<GlobalReject>;
+
+  /**
+   * `prisma.serverPlayers`: Exposes CRUD operations for the **ServerPlayers** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ServerPlayers
+    * const serverPlayers = await prisma.serverPlayers.findMany()
+    * ```
+    */
+  get serverPlayers(): Prisma.ServerPlayersDelegate<GlobalReject>;
 
   /**
    * `prisma.serverTags`: Exposes CRUD operations for the **ServerTags** model.
@@ -730,6 +752,7 @@ export namespace Prisma {
   export const ModelName: {
     User: 'User',
     Server: 'Server',
+    ServerPlayers: 'ServerPlayers',
     ServerTags: 'ServerTags',
     Permission: 'Permission',
     UserHasPermission: 'UserHasPermission',
@@ -947,11 +970,13 @@ export namespace Prisma {
   export type ServerCountOutputType = {
     tags: number
     ServerAvaliation: number
+    ServerPlayers: number
   }
 
   export type ServerCountOutputTypeSelect = {
     tags?: boolean
     ServerAvaliation?: boolean
+    ServerPlayers?: boolean
   }
 
   export type ServerCountOutputTypeGetPayload<S extends boolean | null | undefined | ServerCountOutputTypeArgs> =
@@ -2045,6 +2070,7 @@ export namespace Prisma {
     id: string | null
     name: string | null
     discord_channel: string | null
+    fivem_id: string | null
     contact: string | null
     description: string | null
     logo: string | null
@@ -2055,6 +2081,7 @@ export namespace Prisma {
     id: string | null
     name: string | null
     discord_channel: string | null
+    fivem_id: string | null
     contact: string | null
     description: string | null
     logo: string | null
@@ -2065,6 +2092,7 @@ export namespace Prisma {
     id: number
     name: number
     discord_channel: number
+    fivem_id: number
     contact: number
     description: number
     logo: number
@@ -2077,6 +2105,7 @@ export namespace Prisma {
     id?: true
     name?: true
     discord_channel?: true
+    fivem_id?: true
     contact?: true
     description?: true
     logo?: true
@@ -2087,6 +2116,7 @@ export namespace Prisma {
     id?: true
     name?: true
     discord_channel?: true
+    fivem_id?: true
     contact?: true
     description?: true
     logo?: true
@@ -2097,6 +2127,7 @@ export namespace Prisma {
     id?: true
     name?: true
     discord_channel?: true
+    fivem_id?: true
     contact?: true
     description?: true
     logo?: true
@@ -2181,6 +2212,7 @@ export namespace Prisma {
     id: string
     name: string
     discord_channel: string | null
+    fivem_id: string
     contact: string | null
     description: string | null
     logo: string | null
@@ -2208,12 +2240,14 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     discord_channel?: boolean
+    fivem_id?: boolean
     contact?: boolean
     description?: boolean
     logo?: boolean
     createdAt?: boolean
     tags?: boolean | Server$tagsArgs
     ServerAvaliation?: boolean | Server$ServerAvaliationArgs
+    ServerPlayers?: boolean | Server$ServerPlayersArgs
     _count?: boolean | ServerCountOutputTypeArgs
   }
 
@@ -2221,6 +2255,7 @@ export namespace Prisma {
   export type ServerInclude = {
     tags?: boolean | Server$tagsArgs
     ServerAvaliation?: boolean | Server$ServerAvaliationArgs
+    ServerPlayers?: boolean | Server$ServerPlayersArgs
     _count?: boolean | ServerCountOutputTypeArgs
   }
 
@@ -2233,6 +2268,7 @@ export namespace Prisma {
     [P in TruthyKeys<S['include']>]:
         P extends 'tags' ? Array < ServerTagsGetPayload<S['include'][P]>>  :
         P extends 'ServerAvaliation' ? Array < ServerAvaliationGetPayload<S['include'][P]>>  :
+        P extends 'ServerPlayers' ? Array < ServerPlayersGetPayload<S['include'][P]>>  :
         P extends '_count' ? ServerCountOutputTypeGetPayload<S['include'][P]> :  never
   } 
     : S extends { select: any } & (ServerArgs | ServerFindManyArgs)
@@ -2240,6 +2276,7 @@ export namespace Prisma {
     [P in TruthyKeys<S['select']>]:
         P extends 'tags' ? Array < ServerTagsGetPayload<S['select'][P]>>  :
         P extends 'ServerAvaliation' ? Array < ServerAvaliationGetPayload<S['select'][P]>>  :
+        P extends 'ServerPlayers' ? Array < ServerPlayersGetPayload<S['select'][P]>>  :
         P extends '_count' ? ServerCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof Server ? Server[P] : never
   } 
       : Server
@@ -2615,6 +2652,8 @@ export namespace Prisma {
     tags<T extends Server$tagsArgs= {}>(args?: Subset<T, Server$tagsArgs>): Prisma.PrismaPromise<Array<ServerTagsGetPayload<T>>| Null>;
 
     ServerAvaliation<T extends Server$ServerAvaliationArgs= {}>(args?: Subset<T, Server$ServerAvaliationArgs>): Prisma.PrismaPromise<Array<ServerAvaliationGetPayload<T>>| Null>;
+
+    ServerPlayers<T extends Server$ServerPlayersArgs= {}>(args?: Subset<T, Server$ServerPlayersArgs>): Prisma.PrismaPromise<Array<ServerPlayersGetPayload<T>>| Null>;
 
     private get _document();
     /**
@@ -3014,6 +3053,27 @@ export namespace Prisma {
 
 
   /**
+   * Server.ServerPlayers
+   */
+  export type Server$ServerPlayersArgs = {
+    /**
+     * Select specific fields to fetch from the ServerPlayers
+     */
+    select?: ServerPlayersSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ServerPlayersInclude | null
+    where?: ServerPlayersWhereInput
+    orderBy?: Enumerable<ServerPlayersOrderByWithRelationInput>
+    cursor?: ServerPlayersWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Enumerable<ServerPlayersScalarFieldEnum>
+  }
+
+
+  /**
    * Server without action
    */
   export type ServerArgs = {
@@ -3025,6 +3085,963 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well.
      */
     include?: ServerInclude | null
+  }
+
+
+
+  /**
+   * Model ServerPlayers
+   */
+
+
+  export type AggregateServerPlayers = {
+    _count: ServerPlayersCountAggregateOutputType | null
+    _avg: ServerPlayersAvgAggregateOutputType | null
+    _sum: ServerPlayersSumAggregateOutputType | null
+    _min: ServerPlayersMinAggregateOutputType | null
+    _max: ServerPlayersMaxAggregateOutputType | null
+  }
+
+  export type ServerPlayersAvgAggregateOutputType = {
+    totalPlayers: number | null
+  }
+
+  export type ServerPlayersSumAggregateOutputType = {
+    totalPlayers: number | null
+  }
+
+  export type ServerPlayersMinAggregateOutputType = {
+    id: string | null
+    totalPlayers: number | null
+    serverId: string | null
+    createdAt: Date | null
+  }
+
+  export type ServerPlayersMaxAggregateOutputType = {
+    id: string | null
+    totalPlayers: number | null
+    serverId: string | null
+    createdAt: Date | null
+  }
+
+  export type ServerPlayersCountAggregateOutputType = {
+    id: number
+    totalPlayers: number
+    serverId: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type ServerPlayersAvgAggregateInputType = {
+    totalPlayers?: true
+  }
+
+  export type ServerPlayersSumAggregateInputType = {
+    totalPlayers?: true
+  }
+
+  export type ServerPlayersMinAggregateInputType = {
+    id?: true
+    totalPlayers?: true
+    serverId?: true
+    createdAt?: true
+  }
+
+  export type ServerPlayersMaxAggregateInputType = {
+    id?: true
+    totalPlayers?: true
+    serverId?: true
+    createdAt?: true
+  }
+
+  export type ServerPlayersCountAggregateInputType = {
+    id?: true
+    totalPlayers?: true
+    serverId?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type ServerPlayersAggregateArgs = {
+    /**
+     * Filter which ServerPlayers to aggregate.
+     */
+    where?: ServerPlayersWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ServerPlayers to fetch.
+     */
+    orderBy?: Enumerable<ServerPlayersOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ServerPlayersWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ServerPlayers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ServerPlayers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ServerPlayers
+    **/
+    _count?: true | ServerPlayersCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ServerPlayersAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ServerPlayersSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ServerPlayersMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ServerPlayersMaxAggregateInputType
+  }
+
+  export type GetServerPlayersAggregateType<T extends ServerPlayersAggregateArgs> = {
+        [P in keyof T & keyof AggregateServerPlayers]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateServerPlayers[P]>
+      : GetScalarType<T[P], AggregateServerPlayers[P]>
+  }
+
+
+
+
+  export type ServerPlayersGroupByArgs = {
+    where?: ServerPlayersWhereInput
+    orderBy?: Enumerable<ServerPlayersOrderByWithAggregationInput>
+    by: ServerPlayersScalarFieldEnum[]
+    having?: ServerPlayersScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ServerPlayersCountAggregateInputType | true
+    _avg?: ServerPlayersAvgAggregateInputType
+    _sum?: ServerPlayersSumAggregateInputType
+    _min?: ServerPlayersMinAggregateInputType
+    _max?: ServerPlayersMaxAggregateInputType
+  }
+
+
+  export type ServerPlayersGroupByOutputType = {
+    id: string
+    totalPlayers: number
+    serverId: string | null
+    createdAt: Date
+    _count: ServerPlayersCountAggregateOutputType | null
+    _avg: ServerPlayersAvgAggregateOutputType | null
+    _sum: ServerPlayersSumAggregateOutputType | null
+    _min: ServerPlayersMinAggregateOutputType | null
+    _max: ServerPlayersMaxAggregateOutputType | null
+  }
+
+  type GetServerPlayersGroupByPayload<T extends ServerPlayersGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickArray<ServerPlayersGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ServerPlayersGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ServerPlayersGroupByOutputType[P]>
+            : GetScalarType<T[P], ServerPlayersGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ServerPlayersSelect = {
+    id?: boolean
+    totalPlayers?: boolean
+    serverId?: boolean
+    createdAt?: boolean
+    Server?: boolean | ServerArgs
+  }
+
+
+  export type ServerPlayersInclude = {
+    Server?: boolean | ServerArgs
+  }
+
+  export type ServerPlayersGetPayload<S extends boolean | null | undefined | ServerPlayersArgs> =
+    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
+    S extends true ? ServerPlayers :
+    S extends undefined ? never :
+    S extends { include: any } & (ServerPlayersArgs | ServerPlayersFindManyArgs)
+    ? ServerPlayers  & {
+    [P in TruthyKeys<S['include']>]:
+        P extends 'Server' ? ServerGetPayload<S['include'][P]> | null :  never
+  } 
+    : S extends { select: any } & (ServerPlayersArgs | ServerPlayersFindManyArgs)
+      ? {
+    [P in TruthyKeys<S['select']>]:
+        P extends 'Server' ? ServerGetPayload<S['select'][P]> | null :  P extends keyof ServerPlayers ? ServerPlayers[P] : never
+  } 
+      : ServerPlayers
+
+
+  type ServerPlayersCountArgs = 
+    Omit<ServerPlayersFindManyArgs, 'select' | 'include'> & {
+      select?: ServerPlayersCountAggregateInputType | true
+    }
+
+  export interface ServerPlayersDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
+
+    /**
+     * Find zero or one ServerPlayers that matches the filter.
+     * @param {ServerPlayersFindUniqueArgs} args - Arguments to find a ServerPlayers
+     * @example
+     * // Get one ServerPlayers
+     * const serverPlayers = await prisma.serverPlayers.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends ServerPlayersFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, ServerPlayersFindUniqueArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'ServerPlayers'> extends True ? Prisma__ServerPlayersClient<ServerPlayersGetPayload<T>> : Prisma__ServerPlayersClient<ServerPlayersGetPayload<T> | null, null>
+
+    /**
+     * Find one ServerPlayers that matches the filter or throw an error  with `error.code='P2025'` 
+     *     if no matches were found.
+     * @param {ServerPlayersFindUniqueOrThrowArgs} args - Arguments to find a ServerPlayers
+     * @example
+     * // Get one ServerPlayers
+     * const serverPlayers = await prisma.serverPlayers.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends ServerPlayersFindUniqueOrThrowArgs>(
+      args?: SelectSubset<T, ServerPlayersFindUniqueOrThrowArgs>
+    ): Prisma__ServerPlayersClient<ServerPlayersGetPayload<T>>
+
+    /**
+     * Find the first ServerPlayers that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServerPlayersFindFirstArgs} args - Arguments to find a ServerPlayers
+     * @example
+     * // Get one ServerPlayers
+     * const serverPlayers = await prisma.serverPlayers.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends ServerPlayersFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, ServerPlayersFindFirstArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'ServerPlayers'> extends True ? Prisma__ServerPlayersClient<ServerPlayersGetPayload<T>> : Prisma__ServerPlayersClient<ServerPlayersGetPayload<T> | null, null>
+
+    /**
+     * Find the first ServerPlayers that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServerPlayersFindFirstOrThrowArgs} args - Arguments to find a ServerPlayers
+     * @example
+     * // Get one ServerPlayers
+     * const serverPlayers = await prisma.serverPlayers.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends ServerPlayersFindFirstOrThrowArgs>(
+      args?: SelectSubset<T, ServerPlayersFindFirstOrThrowArgs>
+    ): Prisma__ServerPlayersClient<ServerPlayersGetPayload<T>>
+
+    /**
+     * Find zero or more ServerPlayers that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServerPlayersFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ServerPlayers
+     * const serverPlayers = await prisma.serverPlayers.findMany()
+     * 
+     * // Get first 10 ServerPlayers
+     * const serverPlayers = await prisma.serverPlayers.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const serverPlayersWithIdOnly = await prisma.serverPlayers.findMany({ select: { id: true } })
+     * 
+    **/
+    findMany<T extends ServerPlayersFindManyArgs>(
+      args?: SelectSubset<T, ServerPlayersFindManyArgs>
+    ): Prisma.PrismaPromise<Array<ServerPlayersGetPayload<T>>>
+
+    /**
+     * Create a ServerPlayers.
+     * @param {ServerPlayersCreateArgs} args - Arguments to create a ServerPlayers.
+     * @example
+     * // Create one ServerPlayers
+     * const ServerPlayers = await prisma.serverPlayers.create({
+     *   data: {
+     *     // ... data to create a ServerPlayers
+     *   }
+     * })
+     * 
+    **/
+    create<T extends ServerPlayersCreateArgs>(
+      args: SelectSubset<T, ServerPlayersCreateArgs>
+    ): Prisma__ServerPlayersClient<ServerPlayersGetPayload<T>>
+
+    /**
+     * Create many ServerPlayers.
+     *     @param {ServerPlayersCreateManyArgs} args - Arguments to create many ServerPlayers.
+     *     @example
+     *     // Create many ServerPlayers
+     *     const serverPlayers = await prisma.serverPlayers.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends ServerPlayersCreateManyArgs>(
+      args?: SelectSubset<T, ServerPlayersCreateManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a ServerPlayers.
+     * @param {ServerPlayersDeleteArgs} args - Arguments to delete one ServerPlayers.
+     * @example
+     * // Delete one ServerPlayers
+     * const ServerPlayers = await prisma.serverPlayers.delete({
+     *   where: {
+     *     // ... filter to delete one ServerPlayers
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends ServerPlayersDeleteArgs>(
+      args: SelectSubset<T, ServerPlayersDeleteArgs>
+    ): Prisma__ServerPlayersClient<ServerPlayersGetPayload<T>>
+
+    /**
+     * Update one ServerPlayers.
+     * @param {ServerPlayersUpdateArgs} args - Arguments to update one ServerPlayers.
+     * @example
+     * // Update one ServerPlayers
+     * const serverPlayers = await prisma.serverPlayers.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends ServerPlayersUpdateArgs>(
+      args: SelectSubset<T, ServerPlayersUpdateArgs>
+    ): Prisma__ServerPlayersClient<ServerPlayersGetPayload<T>>
+
+    /**
+     * Delete zero or more ServerPlayers.
+     * @param {ServerPlayersDeleteManyArgs} args - Arguments to filter ServerPlayers to delete.
+     * @example
+     * // Delete a few ServerPlayers
+     * const { count } = await prisma.serverPlayers.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends ServerPlayersDeleteManyArgs>(
+      args?: SelectSubset<T, ServerPlayersDeleteManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ServerPlayers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServerPlayersUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ServerPlayers
+     * const serverPlayers = await prisma.serverPlayers.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends ServerPlayersUpdateManyArgs>(
+      args: SelectSubset<T, ServerPlayersUpdateManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one ServerPlayers.
+     * @param {ServerPlayersUpsertArgs} args - Arguments to update or create a ServerPlayers.
+     * @example
+     * // Update or create a ServerPlayers
+     * const serverPlayers = await prisma.serverPlayers.upsert({
+     *   create: {
+     *     // ... data to create a ServerPlayers
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ServerPlayers we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends ServerPlayersUpsertArgs>(
+      args: SelectSubset<T, ServerPlayersUpsertArgs>
+    ): Prisma__ServerPlayersClient<ServerPlayersGetPayload<T>>
+
+    /**
+     * Count the number of ServerPlayers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServerPlayersCountArgs} args - Arguments to filter ServerPlayers to count.
+     * @example
+     * // Count the number of ServerPlayers
+     * const count = await prisma.serverPlayers.count({
+     *   where: {
+     *     // ... the filter for the ServerPlayers we want to count
+     *   }
+     * })
+    **/
+    count<T extends ServerPlayersCountArgs>(
+      args?: Subset<T, ServerPlayersCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends _Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ServerPlayersCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ServerPlayers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServerPlayersAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ServerPlayersAggregateArgs>(args: Subset<T, ServerPlayersAggregateArgs>): Prisma.PrismaPromise<GetServerPlayersAggregateType<T>>
+
+    /**
+     * Group by ServerPlayers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServerPlayersGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ServerPlayersGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ServerPlayersGroupByArgs['orderBy'] }
+        : { orderBy?: ServerPlayersGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends TupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ServerPlayersGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetServerPlayersGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ServerPlayers.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__ServerPlayersClient<T, Null = never> implements Prisma.PrismaPromise<T> {
+    private readonly _dmmf;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    readonly [Symbol.toStringTag]: 'PrismaPromise';
+    constructor(_dmmf: runtime.DMMFClass, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+
+    Server<T extends ServerArgs= {}>(args?: Subset<T, ServerArgs>): Prisma__ServerClient<ServerGetPayload<T> | Null>;
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+
+
+  // Custom InputTypes
+
+  /**
+   * ServerPlayers base type for findUnique actions
+   */
+  export type ServerPlayersFindUniqueArgsBase = {
+    /**
+     * Select specific fields to fetch from the ServerPlayers
+     */
+    select?: ServerPlayersSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ServerPlayersInclude | null
+    /**
+     * Filter, which ServerPlayers to fetch.
+     */
+    where: ServerPlayersWhereUniqueInput
+  }
+
+  /**
+   * ServerPlayers findUnique
+   */
+  export interface ServerPlayersFindUniqueArgs extends ServerPlayersFindUniqueArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * ServerPlayers findUniqueOrThrow
+   */
+  export type ServerPlayersFindUniqueOrThrowArgs = {
+    /**
+     * Select specific fields to fetch from the ServerPlayers
+     */
+    select?: ServerPlayersSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ServerPlayersInclude | null
+    /**
+     * Filter, which ServerPlayers to fetch.
+     */
+    where: ServerPlayersWhereUniqueInput
+  }
+
+
+  /**
+   * ServerPlayers base type for findFirst actions
+   */
+  export type ServerPlayersFindFirstArgsBase = {
+    /**
+     * Select specific fields to fetch from the ServerPlayers
+     */
+    select?: ServerPlayersSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ServerPlayersInclude | null
+    /**
+     * Filter, which ServerPlayers to fetch.
+     */
+    where?: ServerPlayersWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ServerPlayers to fetch.
+     */
+    orderBy?: Enumerable<ServerPlayersOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ServerPlayers.
+     */
+    cursor?: ServerPlayersWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ServerPlayers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ServerPlayers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ServerPlayers.
+     */
+    distinct?: Enumerable<ServerPlayersScalarFieldEnum>
+  }
+
+  /**
+   * ServerPlayers findFirst
+   */
+  export interface ServerPlayersFindFirstArgs extends ServerPlayersFindFirstArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * ServerPlayers findFirstOrThrow
+   */
+  export type ServerPlayersFindFirstOrThrowArgs = {
+    /**
+     * Select specific fields to fetch from the ServerPlayers
+     */
+    select?: ServerPlayersSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ServerPlayersInclude | null
+    /**
+     * Filter, which ServerPlayers to fetch.
+     */
+    where?: ServerPlayersWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ServerPlayers to fetch.
+     */
+    orderBy?: Enumerable<ServerPlayersOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ServerPlayers.
+     */
+    cursor?: ServerPlayersWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ServerPlayers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ServerPlayers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ServerPlayers.
+     */
+    distinct?: Enumerable<ServerPlayersScalarFieldEnum>
+  }
+
+
+  /**
+   * ServerPlayers findMany
+   */
+  export type ServerPlayersFindManyArgs = {
+    /**
+     * Select specific fields to fetch from the ServerPlayers
+     */
+    select?: ServerPlayersSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ServerPlayersInclude | null
+    /**
+     * Filter, which ServerPlayers to fetch.
+     */
+    where?: ServerPlayersWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ServerPlayers to fetch.
+     */
+    orderBy?: Enumerable<ServerPlayersOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ServerPlayers.
+     */
+    cursor?: ServerPlayersWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ServerPlayers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ServerPlayers.
+     */
+    skip?: number
+    distinct?: Enumerable<ServerPlayersScalarFieldEnum>
+  }
+
+
+  /**
+   * ServerPlayers create
+   */
+  export type ServerPlayersCreateArgs = {
+    /**
+     * Select specific fields to fetch from the ServerPlayers
+     */
+    select?: ServerPlayersSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ServerPlayersInclude | null
+    /**
+     * The data needed to create a ServerPlayers.
+     */
+    data: XOR<ServerPlayersCreateInput, ServerPlayersUncheckedCreateInput>
+  }
+
+
+  /**
+   * ServerPlayers createMany
+   */
+  export type ServerPlayersCreateManyArgs = {
+    /**
+     * The data used to create many ServerPlayers.
+     */
+    data: Enumerable<ServerPlayersCreateManyInput>
+    skipDuplicates?: boolean
+  }
+
+
+  /**
+   * ServerPlayers update
+   */
+  export type ServerPlayersUpdateArgs = {
+    /**
+     * Select specific fields to fetch from the ServerPlayers
+     */
+    select?: ServerPlayersSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ServerPlayersInclude | null
+    /**
+     * The data needed to update a ServerPlayers.
+     */
+    data: XOR<ServerPlayersUpdateInput, ServerPlayersUncheckedUpdateInput>
+    /**
+     * Choose, which ServerPlayers to update.
+     */
+    where: ServerPlayersWhereUniqueInput
+  }
+
+
+  /**
+   * ServerPlayers updateMany
+   */
+  export type ServerPlayersUpdateManyArgs = {
+    /**
+     * The data used to update ServerPlayers.
+     */
+    data: XOR<ServerPlayersUpdateManyMutationInput, ServerPlayersUncheckedUpdateManyInput>
+    /**
+     * Filter which ServerPlayers to update
+     */
+    where?: ServerPlayersWhereInput
+  }
+
+
+  /**
+   * ServerPlayers upsert
+   */
+  export type ServerPlayersUpsertArgs = {
+    /**
+     * Select specific fields to fetch from the ServerPlayers
+     */
+    select?: ServerPlayersSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ServerPlayersInclude | null
+    /**
+     * The filter to search for the ServerPlayers to update in case it exists.
+     */
+    where: ServerPlayersWhereUniqueInput
+    /**
+     * In case the ServerPlayers found by the `where` argument doesn't exist, create a new ServerPlayers with this data.
+     */
+    create: XOR<ServerPlayersCreateInput, ServerPlayersUncheckedCreateInput>
+    /**
+     * In case the ServerPlayers was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ServerPlayersUpdateInput, ServerPlayersUncheckedUpdateInput>
+  }
+
+
+  /**
+   * ServerPlayers delete
+   */
+  export type ServerPlayersDeleteArgs = {
+    /**
+     * Select specific fields to fetch from the ServerPlayers
+     */
+    select?: ServerPlayersSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ServerPlayersInclude | null
+    /**
+     * Filter which ServerPlayers to delete.
+     */
+    where: ServerPlayersWhereUniqueInput
+  }
+
+
+  /**
+   * ServerPlayers deleteMany
+   */
+  export type ServerPlayersDeleteManyArgs = {
+    /**
+     * Filter which ServerPlayers to delete
+     */
+    where?: ServerPlayersWhereInput
+  }
+
+
+  /**
+   * ServerPlayers without action
+   */
+  export type ServerPlayersArgs = {
+    /**
+     * Select specific fields to fetch from the ServerPlayers
+     */
+    select?: ServerPlayersSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ServerPlayersInclude | null
   }
 
 
@@ -6827,10 +7844,21 @@ export namespace Prisma {
   export type ServerAvaliationScalarFieldEnum = (typeof ServerAvaliationScalarFieldEnum)[keyof typeof ServerAvaliationScalarFieldEnum]
 
 
+  export const ServerPlayersScalarFieldEnum: {
+    id: 'id',
+    totalPlayers: 'totalPlayers',
+    serverId: 'serverId',
+    createdAt: 'createdAt'
+  };
+
+  export type ServerPlayersScalarFieldEnum = (typeof ServerPlayersScalarFieldEnum)[keyof typeof ServerPlayersScalarFieldEnum]
+
+
   export const ServerScalarFieldEnum: {
     id: 'id',
     name: 'name',
     discord_channel: 'discord_channel',
+    fivem_id: 'fivem_id',
     contact: 'contact',
     description: 'description',
     logo: 'logo',
@@ -6961,34 +7989,40 @@ export namespace Prisma {
     id?: StringFilter | string
     name?: StringFilter | string
     discord_channel?: StringNullableFilter | string | null
+    fivem_id?: StringFilter | string
     contact?: StringNullableFilter | string | null
     description?: StringNullableFilter | string | null
     logo?: StringNullableFilter | string | null
     createdAt?: DateTimeFilter | Date | string
     tags?: ServerTagsListRelationFilter
     ServerAvaliation?: ServerAvaliationListRelationFilter
+    ServerPlayers?: ServerPlayersListRelationFilter
   }
 
   export type ServerOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrder
     discord_channel?: SortOrder
+    fivem_id?: SortOrder
     contact?: SortOrder
     description?: SortOrder
     logo?: SortOrder
     createdAt?: SortOrder
     tags?: ServerTagsOrderByRelationAggregateInput
     ServerAvaliation?: ServerAvaliationOrderByRelationAggregateInput
+    ServerPlayers?: ServerPlayersOrderByRelationAggregateInput
   }
 
   export type ServerWhereUniqueInput = {
     id?: string
+    fivem_id?: string
   }
 
   export type ServerOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
     discord_channel?: SortOrder
+    fivem_id?: SortOrder
     contact?: SortOrder
     description?: SortOrder
     logo?: SortOrder
@@ -7005,9 +8039,55 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter | string
     name?: StringWithAggregatesFilter | string
     discord_channel?: StringNullableWithAggregatesFilter | string | null
+    fivem_id?: StringWithAggregatesFilter | string
     contact?: StringNullableWithAggregatesFilter | string | null
     description?: StringNullableWithAggregatesFilter | string | null
     logo?: StringNullableWithAggregatesFilter | string | null
+    createdAt?: DateTimeWithAggregatesFilter | Date | string
+  }
+
+  export type ServerPlayersWhereInput = {
+    AND?: Enumerable<ServerPlayersWhereInput>
+    OR?: Enumerable<ServerPlayersWhereInput>
+    NOT?: Enumerable<ServerPlayersWhereInput>
+    id?: StringFilter | string
+    totalPlayers?: IntFilter | number
+    serverId?: StringNullableFilter | string | null
+    createdAt?: DateTimeFilter | Date | string
+    Server?: XOR<ServerRelationFilter, ServerWhereInput> | null
+  }
+
+  export type ServerPlayersOrderByWithRelationInput = {
+    id?: SortOrder
+    totalPlayers?: SortOrder
+    serverId?: SortOrder
+    createdAt?: SortOrder
+    Server?: ServerOrderByWithRelationInput
+  }
+
+  export type ServerPlayersWhereUniqueInput = {
+    id?: string
+  }
+
+  export type ServerPlayersOrderByWithAggregationInput = {
+    id?: SortOrder
+    totalPlayers?: SortOrder
+    serverId?: SortOrder
+    createdAt?: SortOrder
+    _count?: ServerPlayersCountOrderByAggregateInput
+    _avg?: ServerPlayersAvgOrderByAggregateInput
+    _max?: ServerPlayersMaxOrderByAggregateInput
+    _min?: ServerPlayersMinOrderByAggregateInput
+    _sum?: ServerPlayersSumOrderByAggregateInput
+  }
+
+  export type ServerPlayersScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<ServerPlayersScalarWhereWithAggregatesInput>
+    OR?: Enumerable<ServerPlayersScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<ServerPlayersScalarWhereWithAggregatesInput>
+    id?: StringWithAggregatesFilter | string
+    totalPlayers?: IntWithAggregatesFilter | number
+    serverId?: StringNullableWithAggregatesFilter | string | null
     createdAt?: DateTimeWithAggregatesFilter | Date | string
   }
 
@@ -7271,54 +8351,63 @@ export namespace Prisma {
     id?: string
     name: string
     discord_channel?: string | null
+    fivem_id: string
     contact?: string | null
     description?: string | null
     logo?: string | null
     createdAt?: Date | string
     tags?: ServerTagsCreateNestedManyWithoutServerInput
     ServerAvaliation?: ServerAvaliationCreateNestedManyWithoutServerInput
+    ServerPlayers?: ServerPlayersCreateNestedManyWithoutServerInput
   }
 
   export type ServerUncheckedCreateInput = {
     id?: string
     name: string
     discord_channel?: string | null
+    fivem_id: string
     contact?: string | null
     description?: string | null
     logo?: string | null
     createdAt?: Date | string
     tags?: ServerTagsUncheckedCreateNestedManyWithoutServerInput
     ServerAvaliation?: ServerAvaliationUncheckedCreateNestedManyWithoutServerInput
+    ServerPlayers?: ServerPlayersUncheckedCreateNestedManyWithoutServerInput
   }
 
   export type ServerUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     discord_channel?: NullableStringFieldUpdateOperationsInput | string | null
+    fivem_id?: StringFieldUpdateOperationsInput | string
     contact?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tags?: ServerTagsUpdateManyWithoutServerNestedInput
     ServerAvaliation?: ServerAvaliationUpdateManyWithoutServerNestedInput
+    ServerPlayers?: ServerPlayersUpdateManyWithoutServerNestedInput
   }
 
   export type ServerUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     discord_channel?: NullableStringFieldUpdateOperationsInput | string | null
+    fivem_id?: StringFieldUpdateOperationsInput | string
     contact?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tags?: ServerTagsUncheckedUpdateManyWithoutServerNestedInput
     ServerAvaliation?: ServerAvaliationUncheckedUpdateManyWithoutServerNestedInput
+    ServerPlayers?: ServerPlayersUncheckedUpdateManyWithoutServerNestedInput
   }
 
   export type ServerCreateManyInput = {
     id?: string
     name: string
     discord_channel?: string | null
+    fivem_id: string
     contact?: string | null
     description?: string | null
     logo?: string | null
@@ -7329,6 +8418,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     discord_channel?: NullableStringFieldUpdateOperationsInput | string | null
+    fivem_id?: StringFieldUpdateOperationsInput | string
     contact?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     logo?: NullableStringFieldUpdateOperationsInput | string | null
@@ -7339,9 +8429,58 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     discord_channel?: NullableStringFieldUpdateOperationsInput | string | null
+    fivem_id?: StringFieldUpdateOperationsInput | string
     contact?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     logo?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ServerPlayersCreateInput = {
+    id?: string
+    totalPlayers?: number
+    createdAt?: Date | string
+    Server?: ServerCreateNestedOneWithoutServerPlayersInput
+  }
+
+  export type ServerPlayersUncheckedCreateInput = {
+    id?: string
+    totalPlayers?: number
+    serverId?: string | null
+    createdAt?: Date | string
+  }
+
+  export type ServerPlayersUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    totalPlayers?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    Server?: ServerUpdateOneWithoutServerPlayersNestedInput
+  }
+
+  export type ServerPlayersUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    totalPlayers?: IntFieldUpdateOperationsInput | number
+    serverId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ServerPlayersCreateManyInput = {
+    id?: string
+    totalPlayers?: number
+    serverId?: string | null
+    createdAt?: Date | string
+  }
+
+  export type ServerPlayersUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    totalPlayers?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ServerPlayersUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    totalPlayers?: IntFieldUpdateOperationsInput | number
+    serverId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -7687,7 +8826,17 @@ export namespace Prisma {
     none?: ServerTagsWhereInput
   }
 
+  export type ServerPlayersListRelationFilter = {
+    every?: ServerPlayersWhereInput
+    some?: ServerPlayersWhereInput
+    none?: ServerPlayersWhereInput
+  }
+
   export type ServerTagsOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ServerPlayersOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -7695,6 +8844,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     discord_channel?: SortOrder
+    fivem_id?: SortOrder
     contact?: SortOrder
     description?: SortOrder
     logo?: SortOrder
@@ -7705,6 +8855,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     discord_channel?: SortOrder
+    fivem_id?: SortOrder
     contact?: SortOrder
     description?: SortOrder
     logo?: SortOrder
@@ -7715,15 +8866,72 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     discord_channel?: SortOrder
+    fivem_id?: SortOrder
     contact?: SortOrder
     description?: SortOrder
     logo?: SortOrder
     createdAt?: SortOrder
   }
 
+  export type IntFilter = {
+    equals?: number
+    in?: Enumerable<number>
+    notIn?: Enumerable<number>
+    lt?: number
+    lte?: number
+    gt?: number
+    gte?: number
+    not?: NestedIntFilter | number
+  }
+
   export type ServerRelationFilter = {
     is?: ServerWhereInput | null
     isNot?: ServerWhereInput | null
+  }
+
+  export type ServerPlayersCountOrderByAggregateInput = {
+    id?: SortOrder
+    totalPlayers?: SortOrder
+    serverId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ServerPlayersAvgOrderByAggregateInput = {
+    totalPlayers?: SortOrder
+  }
+
+  export type ServerPlayersMaxOrderByAggregateInput = {
+    id?: SortOrder
+    totalPlayers?: SortOrder
+    serverId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ServerPlayersMinOrderByAggregateInput = {
+    id?: SortOrder
+    totalPlayers?: SortOrder
+    serverId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ServerPlayersSumOrderByAggregateInput = {
+    totalPlayers?: SortOrder
+  }
+
+  export type IntWithAggregatesFilter = {
+    equals?: number
+    in?: Enumerable<number>
+    notIn?: Enumerable<number>
+    lt?: number
+    lte?: number
+    gt?: number
+    gte?: number
+    not?: NestedIntWithAggregatesFilter | number
+    _count?: NestedIntFilter
+    _avg?: NestedFloatFilter
+    _sum?: NestedIntFilter
+    _min?: NestedIntFilter
+    _max?: NestedIntFilter
   }
 
   export type ServerTagsCountOrderByAggregateInput = {
@@ -7965,6 +9173,13 @@ export namespace Prisma {
     connect?: Enumerable<ServerAvaliationWhereUniqueInput>
   }
 
+  export type ServerPlayersCreateNestedManyWithoutServerInput = {
+    create?: XOR<Enumerable<ServerPlayersCreateWithoutServerInput>, Enumerable<ServerPlayersUncheckedCreateWithoutServerInput>>
+    connectOrCreate?: Enumerable<ServerPlayersCreateOrConnectWithoutServerInput>
+    createMany?: ServerPlayersCreateManyServerInputEnvelope
+    connect?: Enumerable<ServerPlayersWhereUniqueInput>
+  }
+
   export type ServerTagsUncheckedCreateNestedManyWithoutServerInput = {
     create?: XOR<Enumerable<ServerTagsCreateWithoutServerInput>, Enumerable<ServerTagsUncheckedCreateWithoutServerInput>>
     connectOrCreate?: Enumerable<ServerTagsCreateOrConnectWithoutServerInput>
@@ -7977,6 +9192,13 @@ export namespace Prisma {
     connectOrCreate?: Enumerable<ServerAvaliationCreateOrConnectWithoutServerInput>
     createMany?: ServerAvaliationCreateManyServerInputEnvelope
     connect?: Enumerable<ServerAvaliationWhereUniqueInput>
+  }
+
+  export type ServerPlayersUncheckedCreateNestedManyWithoutServerInput = {
+    create?: XOR<Enumerable<ServerPlayersCreateWithoutServerInput>, Enumerable<ServerPlayersUncheckedCreateWithoutServerInput>>
+    connectOrCreate?: Enumerable<ServerPlayersCreateOrConnectWithoutServerInput>
+    createMany?: ServerPlayersCreateManyServerInputEnvelope
+    connect?: Enumerable<ServerPlayersWhereUniqueInput>
   }
 
   export type ServerTagsUpdateManyWithoutServerNestedInput = {
@@ -8007,6 +9229,20 @@ export namespace Prisma {
     deleteMany?: Enumerable<ServerAvaliationScalarWhereInput>
   }
 
+  export type ServerPlayersUpdateManyWithoutServerNestedInput = {
+    create?: XOR<Enumerable<ServerPlayersCreateWithoutServerInput>, Enumerable<ServerPlayersUncheckedCreateWithoutServerInput>>
+    connectOrCreate?: Enumerable<ServerPlayersCreateOrConnectWithoutServerInput>
+    upsert?: Enumerable<ServerPlayersUpsertWithWhereUniqueWithoutServerInput>
+    createMany?: ServerPlayersCreateManyServerInputEnvelope
+    set?: Enumerable<ServerPlayersWhereUniqueInput>
+    disconnect?: Enumerable<ServerPlayersWhereUniqueInput>
+    delete?: Enumerable<ServerPlayersWhereUniqueInput>
+    connect?: Enumerable<ServerPlayersWhereUniqueInput>
+    update?: Enumerable<ServerPlayersUpdateWithWhereUniqueWithoutServerInput>
+    updateMany?: Enumerable<ServerPlayersUpdateManyWithWhereWithoutServerInput>
+    deleteMany?: Enumerable<ServerPlayersScalarWhereInput>
+  }
+
   export type ServerTagsUncheckedUpdateManyWithoutServerNestedInput = {
     create?: XOR<Enumerable<ServerTagsCreateWithoutServerInput>, Enumerable<ServerTagsUncheckedCreateWithoutServerInput>>
     connectOrCreate?: Enumerable<ServerTagsCreateOrConnectWithoutServerInput>
@@ -8033,6 +9269,44 @@ export namespace Prisma {
     update?: Enumerable<ServerAvaliationUpdateWithWhereUniqueWithoutServerInput>
     updateMany?: Enumerable<ServerAvaliationUpdateManyWithWhereWithoutServerInput>
     deleteMany?: Enumerable<ServerAvaliationScalarWhereInput>
+  }
+
+  export type ServerPlayersUncheckedUpdateManyWithoutServerNestedInput = {
+    create?: XOR<Enumerable<ServerPlayersCreateWithoutServerInput>, Enumerable<ServerPlayersUncheckedCreateWithoutServerInput>>
+    connectOrCreate?: Enumerable<ServerPlayersCreateOrConnectWithoutServerInput>
+    upsert?: Enumerable<ServerPlayersUpsertWithWhereUniqueWithoutServerInput>
+    createMany?: ServerPlayersCreateManyServerInputEnvelope
+    set?: Enumerable<ServerPlayersWhereUniqueInput>
+    disconnect?: Enumerable<ServerPlayersWhereUniqueInput>
+    delete?: Enumerable<ServerPlayersWhereUniqueInput>
+    connect?: Enumerable<ServerPlayersWhereUniqueInput>
+    update?: Enumerable<ServerPlayersUpdateWithWhereUniqueWithoutServerInput>
+    updateMany?: Enumerable<ServerPlayersUpdateManyWithWhereWithoutServerInput>
+    deleteMany?: Enumerable<ServerPlayersScalarWhereInput>
+  }
+
+  export type ServerCreateNestedOneWithoutServerPlayersInput = {
+    create?: XOR<ServerCreateWithoutServerPlayersInput, ServerUncheckedCreateWithoutServerPlayersInput>
+    connectOrCreate?: ServerCreateOrConnectWithoutServerPlayersInput
+    connect?: ServerWhereUniqueInput
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type ServerUpdateOneWithoutServerPlayersNestedInput = {
+    create?: XOR<ServerCreateWithoutServerPlayersInput, ServerUncheckedCreateWithoutServerPlayersInput>
+    connectOrCreate?: ServerCreateOrConnectWithoutServerPlayersInput
+    upsert?: ServerUpsertWithoutServerPlayersInput
+    disconnect?: boolean
+    delete?: boolean
+    connect?: ServerWhereUniqueInput
+    update?: XOR<ServerUpdateWithoutServerPlayersInput, ServerUncheckedUpdateWithoutServerPlayersInput>
   }
 
   export type ServerCreateNestedOneWithoutTagsInput = {
@@ -8274,6 +9548,22 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter
   }
 
+  export type NestedIntWithAggregatesFilter = {
+    equals?: number
+    in?: Enumerable<number>
+    notIn?: Enumerable<number>
+    lt?: number
+    lte?: number
+    gt?: number
+    gte?: number
+    not?: NestedIntWithAggregatesFilter | number
+    _count?: NestedIntFilter
+    _avg?: NestedFloatFilter
+    _sum?: NestedIntFilter
+    _min?: NestedIntFilter
+    _max?: NestedIntFilter
+  }
+
   export type NestedFloatFilter = {
     equals?: number
     in?: Enumerable<number>
@@ -8446,6 +9736,28 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ServerPlayersCreateWithoutServerInput = {
+    id?: string
+    totalPlayers?: number
+    createdAt?: Date | string
+  }
+
+  export type ServerPlayersUncheckedCreateWithoutServerInput = {
+    id?: string
+    totalPlayers?: number
+    createdAt?: Date | string
+  }
+
+  export type ServerPlayersCreateOrConnectWithoutServerInput = {
+    where: ServerPlayersWhereUniqueInput
+    create: XOR<ServerPlayersCreateWithoutServerInput, ServerPlayersUncheckedCreateWithoutServerInput>
+  }
+
+  export type ServerPlayersCreateManyServerInputEnvelope = {
+    data: Enumerable<ServerPlayersCreateManyServerInput>
+    skipDuplicates?: boolean
+  }
+
   export type ServerTagsUpsertWithWhereUniqueWithoutServerInput = {
     where: ServerTagsWhereUniqueInput
     update: XOR<ServerTagsUpdateWithoutServerInput, ServerTagsUncheckedUpdateWithoutServerInput>
@@ -8488,26 +9800,118 @@ export namespace Prisma {
     data: XOR<ServerAvaliationUpdateManyMutationInput, ServerAvaliationUncheckedUpdateManyWithoutServerAvaliationInput>
   }
 
+  export type ServerPlayersUpsertWithWhereUniqueWithoutServerInput = {
+    where: ServerPlayersWhereUniqueInput
+    update: XOR<ServerPlayersUpdateWithoutServerInput, ServerPlayersUncheckedUpdateWithoutServerInput>
+    create: XOR<ServerPlayersCreateWithoutServerInput, ServerPlayersUncheckedCreateWithoutServerInput>
+  }
+
+  export type ServerPlayersUpdateWithWhereUniqueWithoutServerInput = {
+    where: ServerPlayersWhereUniqueInput
+    data: XOR<ServerPlayersUpdateWithoutServerInput, ServerPlayersUncheckedUpdateWithoutServerInput>
+  }
+
+  export type ServerPlayersUpdateManyWithWhereWithoutServerInput = {
+    where: ServerPlayersScalarWhereInput
+    data: XOR<ServerPlayersUpdateManyMutationInput, ServerPlayersUncheckedUpdateManyWithoutServerPlayersInput>
+  }
+
+  export type ServerPlayersScalarWhereInput = {
+    AND?: Enumerable<ServerPlayersScalarWhereInput>
+    OR?: Enumerable<ServerPlayersScalarWhereInput>
+    NOT?: Enumerable<ServerPlayersScalarWhereInput>
+    id?: StringFilter | string
+    totalPlayers?: IntFilter | number
+    serverId?: StringNullableFilter | string | null
+    createdAt?: DateTimeFilter | Date | string
+  }
+
+  export type ServerCreateWithoutServerPlayersInput = {
+    id?: string
+    name: string
+    discord_channel?: string | null
+    fivem_id: string
+    contact?: string | null
+    description?: string | null
+    logo?: string | null
+    createdAt?: Date | string
+    tags?: ServerTagsCreateNestedManyWithoutServerInput
+    ServerAvaliation?: ServerAvaliationCreateNestedManyWithoutServerInput
+  }
+
+  export type ServerUncheckedCreateWithoutServerPlayersInput = {
+    id?: string
+    name: string
+    discord_channel?: string | null
+    fivem_id: string
+    contact?: string | null
+    description?: string | null
+    logo?: string | null
+    createdAt?: Date | string
+    tags?: ServerTagsUncheckedCreateNestedManyWithoutServerInput
+    ServerAvaliation?: ServerAvaliationUncheckedCreateNestedManyWithoutServerInput
+  }
+
+  export type ServerCreateOrConnectWithoutServerPlayersInput = {
+    where: ServerWhereUniqueInput
+    create: XOR<ServerCreateWithoutServerPlayersInput, ServerUncheckedCreateWithoutServerPlayersInput>
+  }
+
+  export type ServerUpsertWithoutServerPlayersInput = {
+    update: XOR<ServerUpdateWithoutServerPlayersInput, ServerUncheckedUpdateWithoutServerPlayersInput>
+    create: XOR<ServerCreateWithoutServerPlayersInput, ServerUncheckedCreateWithoutServerPlayersInput>
+  }
+
+  export type ServerUpdateWithoutServerPlayersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    discord_channel?: NullableStringFieldUpdateOperationsInput | string | null
+    fivem_id?: StringFieldUpdateOperationsInput | string
+    contact?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tags?: ServerTagsUpdateManyWithoutServerNestedInput
+    ServerAvaliation?: ServerAvaliationUpdateManyWithoutServerNestedInput
+  }
+
+  export type ServerUncheckedUpdateWithoutServerPlayersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    discord_channel?: NullableStringFieldUpdateOperationsInput | string | null
+    fivem_id?: StringFieldUpdateOperationsInput | string
+    contact?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tags?: ServerTagsUncheckedUpdateManyWithoutServerNestedInput
+    ServerAvaliation?: ServerAvaliationUncheckedUpdateManyWithoutServerNestedInput
+  }
+
   export type ServerCreateWithoutTagsInput = {
     id?: string
     name: string
     discord_channel?: string | null
+    fivem_id: string
     contact?: string | null
     description?: string | null
     logo?: string | null
     createdAt?: Date | string
     ServerAvaliation?: ServerAvaliationCreateNestedManyWithoutServerInput
+    ServerPlayers?: ServerPlayersCreateNestedManyWithoutServerInput
   }
 
   export type ServerUncheckedCreateWithoutTagsInput = {
     id?: string
     name: string
     discord_channel?: string | null
+    fivem_id: string
     contact?: string | null
     description?: string | null
     logo?: string | null
     createdAt?: Date | string
     ServerAvaliation?: ServerAvaliationUncheckedCreateNestedManyWithoutServerInput
+    ServerPlayers?: ServerPlayersUncheckedCreateNestedManyWithoutServerInput
   }
 
   export type ServerCreateOrConnectWithoutTagsInput = {
@@ -8524,22 +9928,26 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     discord_channel?: NullableStringFieldUpdateOperationsInput | string | null
+    fivem_id?: StringFieldUpdateOperationsInput | string
     contact?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ServerAvaliation?: ServerAvaliationUpdateManyWithoutServerNestedInput
+    ServerPlayers?: ServerPlayersUpdateManyWithoutServerNestedInput
   }
 
   export type ServerUncheckedUpdateWithoutTagsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     discord_channel?: NullableStringFieldUpdateOperationsInput | string | null
+    fivem_id?: StringFieldUpdateOperationsInput | string
     contact?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ServerAvaliation?: ServerAvaliationUncheckedUpdateManyWithoutServerNestedInput
+    ServerPlayers?: ServerPlayersUncheckedUpdateManyWithoutServerNestedInput
   }
 
   export type UserHasPermissionCreateWithoutPermissionInput = {
@@ -8672,22 +10080,26 @@ export namespace Prisma {
     id?: string
     name: string
     discord_channel?: string | null
+    fivem_id: string
     contact?: string | null
     description?: string | null
     logo?: string | null
     createdAt?: Date | string
     tags?: ServerTagsCreateNestedManyWithoutServerInput
+    ServerPlayers?: ServerPlayersCreateNestedManyWithoutServerInput
   }
 
   export type ServerUncheckedCreateWithoutServerAvaliationInput = {
     id?: string
     name: string
     discord_channel?: string | null
+    fivem_id: string
     contact?: string | null
     description?: string | null
     logo?: string | null
     createdAt?: Date | string
     tags?: ServerTagsUncheckedCreateNestedManyWithoutServerInput
+    ServerPlayers?: ServerPlayersUncheckedCreateNestedManyWithoutServerInput
   }
 
   export type ServerCreateOrConnectWithoutServerAvaliationInput = {
@@ -8731,22 +10143,26 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     discord_channel?: NullableStringFieldUpdateOperationsInput | string | null
+    fivem_id?: StringFieldUpdateOperationsInput | string
     contact?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tags?: ServerTagsUpdateManyWithoutServerNestedInput
+    ServerPlayers?: ServerPlayersUpdateManyWithoutServerNestedInput
   }
 
   export type ServerUncheckedUpdateWithoutServerAvaliationInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     discord_channel?: NullableStringFieldUpdateOperationsInput | string | null
+    fivem_id?: StringFieldUpdateOperationsInput | string
     contact?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tags?: ServerTagsUncheckedUpdateManyWithoutServerNestedInput
+    ServerPlayers?: ServerPlayersUncheckedUpdateManyWithoutServerNestedInput
   }
 
   export type UserUpsertWithoutServerAvaliationInput = {
@@ -8841,6 +10257,12 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
+  export type ServerPlayersCreateManyServerInput = {
+    id?: string
+    totalPlayers?: number
+    createdAt?: Date | string
+  }
+
   export type ServerTagsUpdateWithoutServerInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
@@ -8870,6 +10292,24 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     avaliation?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ServerPlayersUpdateWithoutServerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    totalPlayers?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ServerPlayersUncheckedUpdateWithoutServerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    totalPlayers?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ServerPlayersUncheckedUpdateManyWithoutServerPlayersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    totalPlayers?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

@@ -7,9 +7,12 @@ export const ServerValidator = z.object({
   contact: z.string().optional(),
   description: z.string().optional(),
   logo: z.string().optional(),
-  tags: z
-    .array(z.string())
-    .optional(),
+  fivem_id: z.string().refine(async (value) => {
+    const existantServer = await serverService.getServerByFivemId(value);
+    return existantServer === null;
+  }, "Fivem id já registrado"),
+  tags: z.array(z.string()).optional(),
+  players_count: z.number().optional(),
 });
 
 export type ServerRequest = z.infer<typeof ServerValidator>;

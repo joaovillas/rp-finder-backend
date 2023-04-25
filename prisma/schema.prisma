@@ -27,12 +27,22 @@ model Server {
   id               String             @unique @default(uuid())
   name             String
   discord_channel  String?
+  fivem_id         String             @unique
   contact          String?
   tags             ServerTags[]
   description      String?
   logo             String?
   createdAt        DateTime           @default(now())
   ServerAvaliation ServerAvaliation[]
+  ServerPlayers    ServerPlayers[]
+}
+
+model ServerPlayers {
+  id           String   @unique @default(uuid())
+  totalPlayers Int      @default(0)
+  Server       Server?  @relation(fields: [serverId], references: [id])
+  serverId     String?
+  createdAt    DateTime @default(now())
 }
 
 model ServerTags {

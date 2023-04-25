@@ -11,38 +11,38 @@ const create = async (server: Server) => {
   const validatedServer = await ServerValidator.parseAsync(server);
 
   const newServer = await prisma.server.create({
+    include: {
+      tags: true,
+      ServerAvaliation: true,
+      ServerPlayers: true,
+    },
     data: {
+      fivem_id: validatedServer.fivem_id,
       discord_channel: validatedServer.discord_channel,
       name: validatedServer.name,
       contact: validatedServer.contact,
       description: validatedServer.description,
       logo: validatedServer.logo,
+      ServerPlayers: {
+        create: {
+          totalPlayers: validatedServer.players_count,
+        },
+      },
+      tags: {
+        createMany: {
+          skipDuplicates: true,
+          data:
+            validatedServer.tags?.map((tag) => {
+              return {
+                name: tag,
+              };
+            }) || [],
+        },
+      },
     },
   });
 
-  if (validatedServer.tags) {
-    await serverTagsService.createTags(validatedServer.tags, newServer.id);
-  }
-
   return newServer;
-};
-
-const createBatch = async (server: ServerResponse[]) => {
-  const validatedServer = await BatchServerValidator.parseAsync(server);
-
-  const servers = await prisma.server.createMany({
-    data: validatedServer.map((server) => {
-      return {
-        discord_channel: server.discord_channel,
-        name: server.name,
-        contact: server.contact,
-        description: server.description,
-        logo: server.logo,
-      };
-    }),
-  });
-
-  return servers;
 };
 
 const getAll = async () => {
@@ -62,6 +62,16 @@ const getServerByDiscord = async (discord: string) => {
   const server = await prisma.server.findFirst({
     where: {
       discord_channel: discord,
+    },
+  });
+
+  return server;
+};
+
+const getServerByFivemId = async (id: string) => {
+  const server = await prisma.server.findFirst({
+    where: {
+      fivem_id: id,
     },
   });
 
@@ -139,5 +149,5 @@ export default {
   getServerByDiscord,
   getServerByTags,
   getAllServerTags,
-  createBatch,
+  getServerByFivemId,
 };

@@ -1,4 +1,4 @@
-import { Server } from "../../prisma/client";
+import { Server, ServerTags } from "../../prisma/client";
 import prisma from "../config/ORM";
 import { BatchServerValidator, ServerValidator } from "../types/Server";
 import serverTagsService from "./server-tags.service";
@@ -46,16 +46,29 @@ const create = async (server: Server) => {
 };
 
 const getAll = async () => {
-  const servers = await prisma.server.findMany({
-    orderBy: {
-      createdAt: "desc",
+  const servers = await prisma.serverPlayers.findMany({
+    select: {
+      totalPlayers: true,
+      Server: {
+        include: {
+          tags: true,
+        },
+      },
     },
-    include: {
-      ServerAvaliation: true,
+    orderBy: {
+      totalPlayers: "desc",
     },
   });
 
-  return servers;
+  const serversTreated = servers.map((s) => {
+    const server = s.Server;
+    return {
+      ...server,
+      totalPlayers: s.totalPlayers,
+    };
+  });
+
+  return serversTreated;
 };
 
 const getServerByDiscord = async (discord: string) => {

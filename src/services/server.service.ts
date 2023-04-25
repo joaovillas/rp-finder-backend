@@ -1,6 +1,6 @@
 import { Server } from "../../prisma/client";
 import prisma from "../config/ORM";
-import { ServerValidator } from "../types/Server";
+import { BatchServerValidator, ServerValidator } from "../types/Server";
 import serverTagsService from "./server-tags.service";
 
 interface ServerResponse extends Server {
@@ -25,6 +25,24 @@ const create = async (server: Server) => {
   }
 
   return newServer;
+};
+
+const createBatch = async (server: ServerResponse[]) => {
+  const validatedServer = await BatchServerValidator.parseAsync(server);
+
+  const servers = await prisma.server.createMany({
+    data: validatedServer.map((server) => {
+      return {
+        discord_channel: server.discord_channel,
+        name: server.name,
+        contact: server.contact,
+        description: server.description,
+        logo: server.logo,
+      };
+    }),
+  });
+
+  return servers;
 };
 
 const getAll = async () => {
@@ -121,4 +139,5 @@ export default {
   getServerByDiscord,
   getServerByTags,
   getAllServerTags,
+  createBatch,
 };

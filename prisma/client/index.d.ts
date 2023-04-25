@@ -31,7 +31,7 @@ export type User = {
 export type Server = {
   id: string
   name: string
-  discord_channel: string
+  discord_channel: string | null
   contact: string | null
   description: string | null
   logo: string | null
@@ -2180,7 +2180,7 @@ export namespace Prisma {
   export type ServerGroupByOutputType = {
     id: string
     name: string
-    discord_channel: string
+    discord_channel: string | null
     contact: string | null
     description: string | null
     logo: string | null
@@ -6960,7 +6960,7 @@ export namespace Prisma {
     NOT?: Enumerable<ServerWhereInput>
     id?: StringFilter | string
     name?: StringFilter | string
-    discord_channel?: StringFilter | string
+    discord_channel?: StringNullableFilter | string | null
     contact?: StringNullableFilter | string | null
     description?: StringNullableFilter | string | null
     logo?: StringNullableFilter | string | null
@@ -6983,7 +6983,6 @@ export namespace Prisma {
 
   export type ServerWhereUniqueInput = {
     id?: string
-    discord_channel?: string
   }
 
   export type ServerOrderByWithAggregationInput = {
@@ -7005,7 +7004,7 @@ export namespace Prisma {
     NOT?: Enumerable<ServerScalarWhereWithAggregatesInput>
     id?: StringWithAggregatesFilter | string
     name?: StringWithAggregatesFilter | string
-    discord_channel?: StringWithAggregatesFilter | string
+    discord_channel?: StringNullableWithAggregatesFilter | string | null
     contact?: StringNullableWithAggregatesFilter | string | null
     description?: StringNullableWithAggregatesFilter | string | null
     logo?: StringNullableWithAggregatesFilter | string | null
@@ -7271,7 +7270,7 @@ export namespace Prisma {
   export type ServerCreateInput = {
     id?: string
     name: string
-    discord_channel: string
+    discord_channel?: string | null
     contact?: string | null
     description?: string | null
     logo?: string | null
@@ -7283,7 +7282,7 @@ export namespace Prisma {
   export type ServerUncheckedCreateInput = {
     id?: string
     name: string
-    discord_channel: string
+    discord_channel?: string | null
     contact?: string | null
     description?: string | null
     logo?: string | null
@@ -7295,7 +7294,7 @@ export namespace Prisma {
   export type ServerUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    discord_channel?: StringFieldUpdateOperationsInput | string
+    discord_channel?: NullableStringFieldUpdateOperationsInput | string | null
     contact?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     logo?: NullableStringFieldUpdateOperationsInput | string | null
@@ -7307,7 +7306,7 @@ export namespace Prisma {
   export type ServerUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    discord_channel?: StringFieldUpdateOperationsInput | string
+    discord_channel?: NullableStringFieldUpdateOperationsInput | string | null
     contact?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     logo?: NullableStringFieldUpdateOperationsInput | string | null
@@ -7319,7 +7318,7 @@ export namespace Prisma {
   export type ServerCreateManyInput = {
     id?: string
     name: string
-    discord_channel: string
+    discord_channel?: string | null
     contact?: string | null
     description?: string | null
     logo?: string | null
@@ -7329,7 +7328,7 @@ export namespace Prisma {
   export type ServerUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    discord_channel?: StringFieldUpdateOperationsInput | string
+    discord_channel?: NullableStringFieldUpdateOperationsInput | string | null
     contact?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     logo?: NullableStringFieldUpdateOperationsInput | string | null
@@ -7339,7 +7338,7 @@ export namespace Prisma {
   export type ServerUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    discord_channel?: StringFieldUpdateOperationsInput | string
+    discord_channel?: NullableStringFieldUpdateOperationsInput | string | null
     contact?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     logo?: NullableStringFieldUpdateOperationsInput | string | null
@@ -8492,7 +8491,7 @@ export namespace Prisma {
   export type ServerCreateWithoutTagsInput = {
     id?: string
     name: string
-    discord_channel: string
+    discord_channel?: string | null
     contact?: string | null
     description?: string | null
     logo?: string | null
@@ -8503,7 +8502,7 @@ export namespace Prisma {
   export type ServerUncheckedCreateWithoutTagsInput = {
     id?: string
     name: string
-    discord_channel: string
+    discord_channel?: string | null
     contact?: string | null
     description?: string | null
     logo?: string | null
@@ -8524,7 +8523,7 @@ export namespace Prisma {
   export type ServerUpdateWithoutTagsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    discord_channel?: StringFieldUpdateOperationsInput | string
+    discord_channel?: NullableStringFieldUpdateOperationsInput | string | null
     contact?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     logo?: NullableStringFieldUpdateOperationsInput | string | null
@@ -8535,7 +8534,7 @@ export namespace Prisma {
   export type ServerUncheckedUpdateWithoutTagsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    discord_channel?: StringFieldUpdateOperationsInput | string
+    discord_channel?: NullableStringFieldUpdateOperationsInput | string | null
     contact?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     logo?: NullableStringFieldUpdateOperationsInput | string | null
@@ -8672,7 +8671,7 @@ export namespace Prisma {
   export type ServerCreateWithoutServerAvaliationInput = {
     id?: string
     name: string
-    discord_channel: string
+    discord_channel?: string | null
     contact?: string | null
     description?: string | null
     logo?: string | null
@@ -8683,7 +8682,7 @@ export namespace Prisma {
   export type ServerUncheckedCreateWithoutServerAvaliationInput = {
     id?: string
     name: string
-    discord_channel: string
+    discord_channel?: string | null
     contact?: string | null
     description?: string | null
     logo?: string | null
@@ -8731,7 +8730,7 @@ export namespace Prisma {
   export type ServerUpdateWithoutServerAvaliationInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    discord_channel?: StringFieldUpdateOperationsInput | string
+    discord_channel?: NullableStringFieldUpdateOperationsInput | string | null
     contact?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     logo?: NullableStringFieldUpdateOperationsInput | string | null
@@ -8742,7 +8741,7 @@ export namespace Prisma {
   export type ServerUncheckedUpdateWithoutServerAvaliationInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    discord_channel?: StringFieldUpdateOperationsInput | string
+    discord_channel?: NullableStringFieldUpdateOperationsInput | string | null
     contact?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     logo?: NullableStringFieldUpdateOperationsInput | string | null

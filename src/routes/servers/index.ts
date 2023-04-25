@@ -16,7 +16,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/", isAdmin, async (req: RequestValidation<Server>, res) => {
+router.post("/", async (req: RequestValidation<Server>, res) => {
   try {
     const server = await serverService.create(req.body);
     return res.status(201).send(server);

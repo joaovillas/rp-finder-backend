@@ -43,6 +43,15 @@ router.get("/tag", async (req, res) => {
   }
 });
 
+router.get("/name", async (req, res) => {
+  try {
+    const servers = await serverService.getServerByName(req.query.q as string);
+    return res.status(200).send(servers);
+  } catch (err) {
+    responseHandler(err, res);
+  }
+});
+
 router.get("/tags", async (req, res) => {
   try {
     const servers = await serverService.getAllServerTags();

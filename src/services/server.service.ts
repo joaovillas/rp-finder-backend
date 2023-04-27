@@ -130,6 +130,21 @@ const getServerById = async (
   return serverResponse;
 };
 
+const getServerByName = async (name: string) => {
+  const servers = await prisma.server.findMany({
+    where: {
+      name: {
+        startsWith: name,
+      },
+    },
+    include: {
+      tags: true,
+    },
+  });
+
+  return servers;
+};
+
 const getServerByTags = async (tag: string) => {
   const servers = await prisma.server.findMany({
     where: {
@@ -163,4 +178,5 @@ export default {
   getServerByTags,
   getAllServerTags,
   getServerByFivemId,
+  getServerByName,
 };
